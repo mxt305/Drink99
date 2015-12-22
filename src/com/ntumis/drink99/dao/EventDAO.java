@@ -95,7 +95,7 @@ public class EventDAO {
 		return al;
 	}
 	
-	private Event resultSetToEntity(ResultSet res) throws SQLException{
+	Event resultSetToEntity(ResultSet res) throws SQLException{
 		Event e = new Event();
 		e.setId(res.getInt("id"));
 		e.setName(res.getString("name"));
