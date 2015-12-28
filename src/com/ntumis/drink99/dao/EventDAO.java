@@ -107,6 +107,54 @@ public class EventDAO {
 		int userID = res.getInt("enterpriser");
 		e.setEnterpriser(ud.queryById(userID));
 		return e;
-	}	
+	}
+	
+	public boolean insert(Event ev) {
+		String sql = "INSERT TO event (id, date, name, enterpriser, startT, place, note) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ev.getId());
+			ps.setDate(2, new java.sql.Date(ev.getDate().getTime()));
+			ps.setString(3, ev.getName());
+			ps.setInt(4, ev.getEnterpriser().getId());
+			ps.setTime(5, ev.getStartT());
+			ps.setString(6, ev.getPlace());
+			ps.setString(7, ev.getNote());
+			return ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean update(Event ev) {
+		String sql = "UPDATE event SET date=?, name=?, enterpriser=?, startT=?, place=?, note=? WHERE id=?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDate(1, new java.sql.Date(ev.getDate().getTime()));
+			ps.setString(2, ev.getName());
+			ps.setInt(3, ev.getEnterpriser().getId());
+			ps.setTime(4, ev.getStartT());
+			ps.setString(5, ev.getPlace());
+			ps.setString(6, ev.getNote());
+			ps.setInt(7, ev.getId());
+			return ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean delete(int id) {
+		String sql = "DELETE FROM event WHERE id=?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			return ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 }
