@@ -24,7 +24,7 @@ public class EventDAO {
 		ArrayList<Event> al = new  ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet res = ps.getResultSet();
+			ResultSet res = ps.executeQuery();
 			while (res.next() && res != null) {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
@@ -52,13 +52,13 @@ public class EventDAO {
 		return ev;
 	}
 	
-	public ArrayList<Event> queryByMonth(Date sD, Date eD){
+	public ArrayList<Event> queryByPeriod(Date dStart, Date dEnd){
 		String sql = "SELECT * FROM event WHERE (date BETWEEN ? AND ?)";
 		ArrayList<Event> al = new  ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setDate(1, new java.sql.Date(sD.getTime()));
-			ps.setDate(2, new java.sql.Date(eD.getTime()));
+			ps.setDate(1, new java.sql.Date(dStart.getTime()));
+			ps.setDate(2, new java.sql.Date(dEnd.getTime()));
 			ResultSet res = ps.getResultSet();
 			while (res.next() && res != null) {
 				Event ev = resultSetToEntity(res);

@@ -19,10 +19,11 @@ public class UserDAO {
 	public ArrayList<User> queryAll(){
 		String sql = "SELECT * FROM member";
 		ArrayList<User> al = new  ArrayList<>();
+		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet res = ps.getResultSet();
-			while (res.next() && res != null) {
+			ResultSet res = ps.executeQuery();
+			while (res != null && res.next()) {
 				User u = resultSetToEntity(res);
 				al.add(u);
 			}
@@ -38,8 +39,7 @@ public class UserDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			ps.execute();
-			ResultSet res = ps.getResultSet();
+			ResultSet res = ps.executeQuery();
 			if (res.next() && res != null) {
 				u = resultSetToEntity(res);
 			}
@@ -55,8 +55,7 @@ public class UserDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, fbid);
-			ps.execute();
-			ResultSet res = ps.getResultSet();
+			ResultSet res = ps.executeQuery();
 			if (res.next() && res != null) {
 				u = resultSetToEntity(res);
 			}

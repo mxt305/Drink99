@@ -15,6 +15,11 @@
 	<p>已登入</p>
 	<p>帳號：${ user }</p>
 	<p><a href="<c:url value="/login?act=logout" />">登出</a></p>
+	<p>
+	<c:forEach var="u" items="${ users }">
+	${ u.id }.${ u.name } <br />
+	</c:forEach>
+	</p>
 	</c:when>
 	<c:otherwise>
 	<!-- 未登入畫面 -->
