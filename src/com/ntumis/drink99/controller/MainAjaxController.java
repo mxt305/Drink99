@@ -42,6 +42,7 @@ public class MainAjaxController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-type", "application/json");
 		getDate(request);
+		
 		ArrayList<Event> events = getEvents();
 		Gson gson = new Gson();
 		String json_string = gson.toJson(events);
@@ -51,28 +52,31 @@ public class MainAjaxController extends HttpServlet {
 	
 	
 	private void getDate(HttpServletRequest request){
-		Object oMode = request.getAttribute("mode");
+		Object oMode = request.getParameter("mode");
 		try {
-			int mMode = (int) oMode;
+			int mMode = Integer.parseInt(oMode.toString());
 			if (mMode >= 0 && mMode <= 1){
 				mode = mMode;
 			}
 		} catch (Exception e){		
 		}
-		Object oYear = request.getAttribute("y");
+		Object oYear = request.getParameter("y");
 		try {
-			int mYear = (int) oYear;
+			int mYear = Integer.parseInt(oYear.toString());
 			if (mYear >= 1 && mYear <= 9999){
 				cal.set(Calendar.YEAR, mYear);;
 			}
 		} catch (Exception e){
+			e.printStackTrace();
 		}
-		Object oValue = request.getAttribute("v");
+		Object oValue = request.getParameter("v");
 		try {
-			int mValue = (int) oValue;
+			int mValue = Integer.parseInt(oValue.toString());
 			if (mode == 1){
 				if(mValue > 0 && mValue < cal.getWeeksInWeekYear()){
 					cal.setWeekDate(cal.get(Calendar.YEAR), mValue, 1);
+				} else {
+					cal.setWeekDate(cal.get(Calendar.YEAR), 1, 1);
 				}
 			} else {
 				if(mValue > 0 && mValue <= 12){
@@ -96,7 +100,6 @@ public class MainAjaxController extends HttpServlet {
 		} else {
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			dStart = cal.getTime();
-			cal.set(Calendar.DAY_OF_MONTH, cal.get(cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
 			dEnd = cal.getTime();	
 		}
 		ArrayList<Event> al = dEvent.queryByPeriod(dStart, dEnd);
