@@ -25,7 +25,7 @@ public class EventDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet res = ps.executeQuery();
-			while (res.next() && res != null) {
+			while (res != null && res.next()) {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
@@ -42,8 +42,8 @@ public class EventDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ps.execute();
-			ResultSet res = ps.getResultSet();
-			if (res.next() && res != null) {
+			ResultSet res = ps.executeQuery();
+			while (res != null && res.next()) {
 				ev = resultSetToEntity(res);
 			}
 		} catch (SQLException e) {
@@ -59,8 +59,8 @@ public class EventDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDate(1, new java.sql.Date(dStart.getTime()));
 			ps.setDate(2, new java.sql.Date(dEnd.getTime()));
-			ResultSet res = ps.getResultSet();
-			while (res.next() && res != null) {
+			ResultSet res = ps.executeQuery();
+			while (res != null && res.next()) {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
@@ -84,8 +84,8 @@ public class EventDAO {
 			if(status == 1 || status == 2){
 				ps.setDate(2, new java.sql.Date(new Date().getTime()));
 			}
-			ResultSet res = ps.getResultSet();
-			while (res.next() && res != null) {
+			ResultSet res = ps.executeQuery();
+			while (res != null && res.next()) {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
@@ -101,7 +101,7 @@ public class EventDAO {
 		e.setName(res.getString("name"));
 		e.setDate(res.getDate("date"));
 		e.setStartT(res.getTime("startT"));
-		e.setEndT(res.getTime("endT"));
+		//e.setEndT(res.getTime("endT"));
 		e.setPlace(res.getString("place"));
 		e.setNote(res.getString("note"));
 		int userID = res.getInt("enterpriser");

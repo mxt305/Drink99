@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class MainController
  */
-@WebServlet("/")
+@WebServlet("/index")
 public class MainController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

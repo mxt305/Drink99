@@ -3,7 +3,7 @@ package com.ntumis.drink99.entity;
 public class User {
 	private int id;
 	private String name;
-	private String fbid;
+	private transient String fbid;
 	
 	public int getId() {
 		return id;

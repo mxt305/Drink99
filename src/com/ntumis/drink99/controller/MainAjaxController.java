@@ -41,8 +41,8 @@ public class MainAjaxController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-type", "application/json");
-		getDate(request);
-		
+		response.setCharacterEncoding("UTF-8");
+		getDate(request);	
 		ArrayList<Event> events = getEvents();
 		Gson gson = new Gson();
 		String json_string = gson.toJson(events);
@@ -67,7 +67,6 @@ public class MainAjaxController extends HttpServlet {
 				cal.set(Calendar.YEAR, mYear);;
 			}
 		} catch (Exception e){
-			e.printStackTrace();
 		}
 		Object oValue = request.getParameter("v");
 		try {
@@ -91,7 +90,7 @@ public class MainAjaxController extends HttpServlet {
 		Connection conn = DBConnector.createConnection();
 		EventDAO dEvent = new EventDAO(conn);
 		Date dStart;
-		Date dEnd;
+		Date dEnd;		
 		if (mode == 1){
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 			dStart = cal.getTime();
@@ -100,8 +99,11 @@ public class MainAjaxController extends HttpServlet {
 		} else {
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			dStart = cal.getTime();
+			cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 			dEnd = cal.getTime();	
 		}
+		System.out.println(dStart);
+		System.out.println(dEnd);
 		ArrayList<Event> al = dEvent.queryByPeriod(dStart, dEnd);
 		return al;
 	}

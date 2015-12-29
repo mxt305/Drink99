@@ -11,7 +11,7 @@ public class Event {
 	private String note;
 	private Date date;
 	private Time startT;
-	private Time endT;
+	//private Time endT;
 	private String place;
 	
 	public int getId() {
@@ -50,12 +50,12 @@ public class Event {
 	public void setStartT(Time startT) {
 		this.startT = startT;
 	}
-	public Time getEndT() {
+	/*public Time getEndT() {
 		return endT;
 	}
 	public void setEndT(Time endT) {
 		this.endT = endT;
-	}
+	}*/
 	public String getPlace() {
 		return place;
 	}
