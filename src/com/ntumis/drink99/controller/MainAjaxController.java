@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.ntumis.drink99.dao.DBConnector;
 import com.ntumis.drink99.dao.EventDAO;
+import com.ntumis.drink99.entity.CalEvent;
+import com.ntumis.drink99.entity.CalModel;
 import com.ntumis.drink99.entity.Event;
 
 /**
@@ -39,13 +41,35 @@ public class MainAjaxController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-type", "application/json");
 		response.setCharacterEncoding("UTF-8");
 		getDate(request);	
 		ArrayList<Event> events = getEvents();
+		CalModel model = new CalModel();
+		model.setSuccess(1);
+		ArrayList<CalEvent> alRes = new ArrayList<CalEvent>();
+		String[] path_strs = request.getRequestURI().split("/");
+		for(Event ev: events){
+			CalEvent cEv = new CalEvent();
+			cEv.setId(ev.getId());
+			cEv.setTitle(String.format("%s (by %s)", ev.getName(), ev.getEnterpriser().getName()));
+			cEv.setUrl(String.format("/%s/event/?id=%d", path_strs[1], ev.getId()));
+			cEv.setClass_name("event-info");
+			Calendar eCal = Calendar.getInstance();
+			eCal.setTime(ev.getDate());
+			eCal.set(Calendar.HOUR_OF_DAY, ev.getStartT().getHours());
+			eCal.set(Calendar.MINUTE, ev.getStartT().getMinutes());
+			eCal.set(Calendar.SECOND, ev.getStartT().getSeconds());
+			cEv.setStart(eCal.getTimeInMillis());
+			eCal.add(Calendar.HOUR_OF_DAY, 3);
+			cEv.setEnd(eCal.getTimeInMillis());
+			alRes.add(cEv);
+		}
+		model.setResult(alRes);
 		Gson gson = new Gson();
-		String json_string = gson.toJson(events);
+		String json_string = gson.toJson(model);
 		PrintWriter out = response.getWriter();
 		out.print(json_string);
 	}
