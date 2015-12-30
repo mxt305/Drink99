@@ -5,11 +5,11 @@
 
 	<div class="pull-right form-inline">
 		<div class="btn-group">
-			<a id="btn_prev" class="btn btn-primary" href=""><<
+			<a id="btn_prev" class="btn btn-primary" href="">&lt;&lt;
 				Prev</a>
 			<a id="btn_today" class="btn btn-primary" href="<c:url value="/" />">Today</a>
 			<a id="btn_next" class="btn btn-primary" href="">Next
-				>></a>
+				&gt;&gt;</a>
 		</div>
 		<div class="btn-group">
 			<button class="btn btn-warning" data-calendar-view="year">Year</button>

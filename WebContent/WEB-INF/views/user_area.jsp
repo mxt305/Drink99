@@ -15,7 +15,7 @@
 	<div id="navbar" class="navbar-collapse collapse">
 		<c:choose>
 		<c:when test="${ isLogin }">
-		user:${ user }
+		user:${ user.name }
 		</c:when>
 		<c:otherwise>
 		未登入 請先登入
