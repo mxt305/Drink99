@@ -22,11 +22,19 @@ import com.ntumis.drink99.entity.User;
  */
 @WebFilter(filterName = "AuthFilter")
 public class AuthFilter implements Filter {
-
+	protected Connection conn;
+	
 	public AuthFilter() {
-
+		conn = DBConnector.createConnection();
 	}
-
+	
+	@Override
+	protected void finalize() throws Throwable {
+		if(conn != null && !conn.isClosed()){
+			conn.close();
+		}
+	}
+	
 	public void destroy() {
 
 	}
@@ -59,7 +67,6 @@ public class AuthFilter implements Filter {
 	}
 
 	private User getUserdata(int id) {
-		Connection conn = DBConnector.createConnection();
 		UserDAO dUser = new UserDAO(conn);
 		User u = dUser.queryById(id);
 		return u;

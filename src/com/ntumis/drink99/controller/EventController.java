@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ntumis.drink99.dao.DBConnector;
 import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.entity.Event;
 
@@ -21,8 +20,7 @@ public class EventController extends UserPageController {
 
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		Connection conn = DBConnector.createConnection();		
+			throws ServletException, IOException {	
 		getModel(request,conn);
 		if (ev==null){
 			//if the event is not exist

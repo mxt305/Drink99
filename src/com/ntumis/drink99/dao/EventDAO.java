@@ -29,6 +29,8 @@ public class EventDAO {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -46,6 +48,8 @@ public class EventDAO {
 			while (res != null && res.next()) {
 				ev = resultSetToEntity(res);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,6 +68,8 @@ public class EventDAO {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -73,9 +79,9 @@ public class EventDAO {
 	public ArrayList<Event> queryByUser(User u, int status){
 		String sql = "SELECT * FROM event_join JOIN event ON event_join.eventID = event.id  WHERE event_join.memberID=?";
 		if(status == 1){
-			sql += "AND event.date>=?";
+			sql += " AND event.date>=?";
 		} else if (status == 2){
-			sql += "AND event.date<?";
+			sql += " AND event.date<?";
 		}
 		ArrayList<Event> al = new  ArrayList<>();
 		try {
@@ -89,6 +95,8 @@ public class EventDAO {
 				Event ev = resultSetToEntity(res);
 				al.add(ev);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -120,7 +128,9 @@ public class EventDAO {
 			ps.setTime(5, ev.getStartT());
 			ps.setString(6, ev.getPlace());
 			ps.setString(7, ev.getNote());
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +148,9 @@ public class EventDAO {
 			ps.setString(5, ev.getPlace());
 			ps.setString(6, ev.getNote());
 			ps.setInt(7, ev.getId());
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -150,7 +162,9 @@ public class EventDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

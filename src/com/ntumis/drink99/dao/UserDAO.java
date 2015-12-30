@@ -27,6 +27,8 @@ public class UserDAO {
 				User u = resultSetToEntity(res);
 				al.add(u);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,6 +45,8 @@ public class UserDAO {
 			if (res.next() && res != null) {
 				u = resultSetToEntity(res);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -59,6 +63,8 @@ public class UserDAO {
 			if (res.next() && res != null) {
 				u = resultSetToEntity(res);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +78,9 @@ public class UserDAO {
 				ps.setInt(1, u.getId());
 				ps.setString(2, u.getName());
 				ps.setString(3, u.getFbid());
-				return ps.execute();
+				boolean b = ps.execute();
+				ps.close();
+				return b;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -85,7 +93,9 @@ public class UserDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getName());
 			ps.setInt(2, u.getId());		
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -97,7 +107,9 @@ public class UserDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, u.getId());
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -124,6 +136,8 @@ public class UserDAO {
 				User u = resultSetToEntity(res);
 				al.add(u);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

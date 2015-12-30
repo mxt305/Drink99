@@ -16,7 +16,7 @@ window.calendar_languages['zh-TW'] = {
 	title_week:       '{1} 年 第 {0} 周 ',
 	title_day:        '{3} 年 {2} {1} 日， {0} ',
 
-	week:        '第{0}周',
+	week:        '第{0}週',
 	all_day:     '整天',
 	time:        '時間',
 	events:      '事件',
@@ -49,13 +49,13 @@ window.calendar_languages['zh-TW'] = {
 	ms10: '11 月',
 	ms11: '12 月',
 
-	d0:        '周日',
-	d1:        '周一',
-	d2:        '周二',
-	d3:        '周三',
-	d4:        '周四',
-	d5:        '周五',
-	d6:        '周六',
+	d0:        '週日',
+	d1:        '週一',
+	d2:        '週二',
+	d3:        '週三',
+	d4:        '週四',
+	d5:        '週五',
+	d6:        '週六',
 
 	first_day: 2,
 

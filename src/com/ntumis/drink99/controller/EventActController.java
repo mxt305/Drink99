@@ -59,7 +59,7 @@ public class EventActController extends UserPageController {
 			switch (mode) {
 			case 0: // add
 				ev = getFormData(request, ev);
-				// ev.setEnterpriser(user);
+				ev.setEnterpriser(getUser());
 				dEvent.insert(ev);
 				break;
 			case 1: // edit

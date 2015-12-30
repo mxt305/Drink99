@@ -5,11 +5,11 @@
 
 	<div class="pull-right form-inline">
 		<div class="btn-group">
-			<a id="btn_prev" class="btn btn-primary" href="">&lt;&lt;
-				Prev</a>
-			<a id="btn_today" class="btn btn-primary" href="<c:url value="/" />">Today</a>
-			<a id="btn_next" class="btn btn-primary" href="">Next
-				&gt;&gt;</a>
+			<div class="btn-group">
+				<button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; Prev</button>
+				<button class="btn" data-calendar-nav="today">Today</button>
+				<button class="btn btn-primary" data-calendar-nav="next">Next &gt;&gt;</button>
+			</div>
 		</div>
 		<div class="btn-group">
 			<button class="btn btn-warning" data-calendar-view="year">Year</button>
@@ -48,7 +48,6 @@
 		if (isNaN(d.getTime())) { // d.valueOf() could also work
 		} else {
 			day = d.yyyymmdd();
-			url_param = "?y=" + d.getFullYear() + "&v=" + (d.getMonth() + 1);
 		}
 	}
 
@@ -57,18 +56,36 @@
 	}
 
 	$(function() {
-		d.setDate(1);
+		/*d.setDate(1);
 		$("#cal_title").text(d.getFullYear() + "年" + (d.getMonth() + 1) + "月");
 		d.setMonth(d.getMonth()-1);
 		$("#btn_prev").attr("href","<c:url value="/" />?date=" + d.yyyymmdd());
 		d.setMonth(d.getMonth()+2);
-		$("#btn_next").attr("href","<c:url value="/" />?date=" + d.yyyymmdd());
+		$("#btn_next").attr("href","<c:url value="/" />?date=" + d.yyyymmdd());*/
+		$('.btn-group button[data-calendar-nav]').each(function() {
+			var $this = $(this);
+			$this.click(function() {
+				calendar.navigate($this.data('calendar-nav'));
+			});
+		});
+
+		$('.btn-group button[data-calendar-view]').each(function() {
+			var $this = $(this);
+			$this.click(function() {
+				calendar.view($this.data('calendar-view'));
+			});
+		});
 	});
 
 	var calendar = $("#calendar").calendar({
 		tmpl_path : "<c:url value="/tmpls/" />",
 		day : day,
-		events_source : "<c:url value="/json/main" />" + url_param,
-		language : 'zh-TW'
+		events_source : "<c:url value="/json/main" />",
+		language : 'zh-TW',
+		onAfterViewLoad: function(view) {
+			$('#cal_title').text(this.getTitle());
+			$('.btn-group button').removeClass('active');
+			$('button[data-calendar-view="' + view + '"]').addClass('active');
+		},
 	});
 </script>
