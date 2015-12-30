@@ -1,4 +1,4 @@
-package com.ntumis.drink99.controller;
+package com.ntumis.drink99.example;
 
 import java.io.IOException;
 import java.io.PrintWriter;

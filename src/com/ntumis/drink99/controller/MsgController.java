@@ -17,7 +17,7 @@ import com.ntumis.drink99.dao.EventMsgDAO;
 import com.ntumis.drink99.entity.Event;
 import com.ntumis.drink99.entity.EventMsg;
 
-@WebServlet({ "/event/msg/index", "/event/msg/edit", "/event/msg/add" })
+@WebServlet({ "/event/msg/data", "/event/msg/edit", "/event/msg/add" })
 public class MsgController extends UserPageController {
 
 	private int mode;
@@ -27,10 +27,7 @@ public class MsgController extends UserPageController {
 	@Override
 	protected void doPostProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		getMode(request);
-
 		try {
-
 			EventMsgDAO dMsg = new EventMsgDAO(conn);
 			EventMsg em = null;
 			switch (mode) {
@@ -66,7 +63,6 @@ public class MsgController extends UserPageController {
 		} else {
 			mode = -1;
 		}
-		System.out.println(sMode);
 	}
 
 	@Override
@@ -87,11 +83,14 @@ public class MsgController extends UserPageController {
 	@Override
 	protected void doPreProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		getMode(request);
 		getModel(request, conn);
 		if (ev == null) {
 			// if the event is not exist
 			// TODO code here
 		}
+		response.setHeader("Content-type", "application/json");
+		response.setCharacterEncoding("UTF-8");
 	}
 
 	private EventMsg getFormData(HttpServletRequest request, EventMsg em) {

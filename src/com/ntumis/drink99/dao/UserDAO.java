@@ -80,7 +80,7 @@ public class UserDAO {
 	}
 
 	public boolean update(User u) {
-		String sql = "UPDATE member SET name=? WHERE eventID=? AND memberID=?";
+		String sql = "UPDATE member SET name=? WHERE id=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getName());

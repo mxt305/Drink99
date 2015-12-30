@@ -58,7 +58,8 @@ public abstract class UserPageController extends HttpServlet {
 		if(o != null && o instanceof Boolean){
 			isLogin = (Boolean) o;
 		}
-		if(isLogin){
+		if(isLogin){ 
+			//user = (User) request.getAttribute("user");	
 			doPreProcess(request,response);
 			switch(method){
 			case 1:
