@@ -1,7 +1,6 @@
 package com.ntumis.drink99.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 
@@ -10,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ntumis.drink99.dao.DBConnector;
 import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.entity.Event;
 
@@ -20,25 +18,23 @@ public class EventActController extends UserPageController {
 	SimpleDateFormat sdf_time;
 	private int mode;
 	private static final long serialVersionUID = -312343616281541301L;
-
-	public EventActController() {
-		super();
+	
+	public EventActController(){
 		sdf = new SimpleDateFormat("y-M-d");
 		sdf_time = new SimpleDateFormat("H:m:s");
 	}
-
+	
 	@Override
 	protected void doGetProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		getMode(request);
 
 		switch (mode) {
-		case 1: // add
+		case 0: // add
 			//TODO show add view
 			break;
-		case 2: // edit
+		case 1: // edit
 			try {
-				Connection conn = DBConnector.createConnection();
 				EventDAO dEvent = new EventDAO(conn);
 				Object mId = request.getParameter("id");
 				int id = Integer.parseInt(mId.toString());
@@ -59,15 +55,14 @@ public class EventActController extends UserPageController {
 		getMode(request);
 		Event ev = null;
 		try {
-			Connection conn = DBConnector.createConnection();
 			EventDAO dEvent = new EventDAO(conn);
 			switch (mode) {
-			case 1: // add
+			case 0: // add
 				ev = getFormData(request, ev);
 				// ev.setEnterpriser(user);
 				dEvent.insert(ev);
 				break;
-			case 2: // edit
+			case 1: // edit
 				Object mId = request.getParameter("id");
 				int id = Integer.parseInt(mId.toString());
 				ev = getFormData(request, dEvent.queryById(id));

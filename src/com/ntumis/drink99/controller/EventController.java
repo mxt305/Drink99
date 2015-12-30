@@ -3,6 +3,7 @@ package com.ntumis.drink99.controller;
 import java.io.IOException;
 import java.sql.Connection;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,9 @@ public class EventController extends UserPageController {
 			//if the event is not exist
 			//TODO code here
 		} else {
-			request.setAttribute("evdata", ev);
+			request.setAttribute("data", ev);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/event.jsp");
+			rd.forward(request, response);
 			//TODO show event view
 		}
 	}

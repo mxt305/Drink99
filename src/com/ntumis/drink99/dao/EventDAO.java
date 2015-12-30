@@ -36,7 +36,7 @@ public class EventDAO {
 	}
 	
 	public Event queryById(int id){
-		String sql = "SELECT * FROM member WHERE id=?";
+		String sql = "SELECT * FROM event WHERE id=?";
 		Event ev = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -95,7 +95,7 @@ public class EventDAO {
 		return al;
 	}
 	
-	Event resultSetToEntity(ResultSet res) throws SQLException{
+	private Event resultSetToEntity(ResultSet res) throws SQLException{
 		Event e = new Event();
 		e.setId(res.getInt("id"));
 		e.setName(res.getString("name"));

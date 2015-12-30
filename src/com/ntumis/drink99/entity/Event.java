@@ -74,8 +74,4 @@ public class Event {
 	public ArrayList<User> getRejectees(){
 		return null;
 	}
-	
-	public ArrayList<EventMsg> getMsg(){
-		return null;
-	}
 }

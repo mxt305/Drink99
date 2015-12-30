@@ -7,7 +7,7 @@
 		<div class="btn-group">
 			<a id="btn_prev" class="btn btn-primary" href=""><<
 				Prev</a>
-			<a id="btn_today" class="btn btn-primary" href="">Today</a>
+			<a id="btn_today" class="btn btn-primary" href="<c:url value="/" />">Today</a>
 			<a id="btn_next" class="btn btn-primary" href="">Next
 				>></a>
 		</div>

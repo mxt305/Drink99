@@ -55,7 +55,7 @@ public class MainAjaxController extends HttpServlet {
 			CalEvent cEv = new CalEvent();
 			cEv.setId(ev.getId());
 			cEv.setTitle(String.format("%s (by %s)", ev.getName(), ev.getEnterpriser().getName()));
-			cEv.setUrl(String.format("/%s/event/?id=%d", path_strs[1], ev.getId()));
+			cEv.setUrl(String.format("/%s/event?id=%d", path_strs[1], ev.getId()));
 			cEv.setClass_name("event-info");
 			Calendar eCal = Calendar.getInstance();
 			eCal.setTime(ev.getDate());
