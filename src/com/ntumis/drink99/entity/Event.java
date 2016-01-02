@@ -11,7 +11,21 @@ public class Event {
 	private String note;
 	private Date date;
 	private Time startT;
-	//private Time endT;
+	private Time endT;
+	private int category;
+	public Time getEndT() {
+		return endT;
+	}
+	public void setEndT(Time endT) {
+		this.endT = endT;
+	}
+	public int getCategory() {
+		return category;
+	}
+	public void setCategory(int category) {
+		this.category = category;
+	}
+
 	private String place;
 	
 	public int getId() {
@@ -50,12 +64,7 @@ public class Event {
 	public void setStartT(Time startT) {
 		this.startT = startT;
 	}
-	/*public Time getEndT() {
-		return endT;
-	}
-	public void setEndT(Time endT) {
-		this.endT = endT;
-	}*/
+
 	public String getPlace() {
 		return place;
 	}

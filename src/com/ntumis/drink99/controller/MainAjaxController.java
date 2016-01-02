@@ -3,6 +3,7 @@ package com.ntumis.drink99.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,7 +55,6 @@ public class MainAjaxController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-type", "application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -70,14 +70,8 @@ public class MainAjaxController extends HttpServlet {
 			cEv.setTitle(String.format("%s (by %s)", ev.getName(), ev.getEnterpriser().getName()));
 			cEv.setUrl(String.format("/%s/event?id=%d", path_strs[1], ev.getId()));
 			cEv.setClass_name("event-info");
-			Calendar eCal = Calendar.getInstance();
-			eCal.setTime(ev.getDate());
-			eCal.set(Calendar.HOUR_OF_DAY, ev.getStartT().getHours());
-			eCal.set(Calendar.MINUTE, ev.getStartT().getMinutes());
-			eCal.set(Calendar.SECOND, ev.getStartT().getSeconds());
-			cEv.setStart(eCal.getTimeInMillis());
-			eCal.add(Calendar.HOUR_OF_DAY, 3);
-			cEv.setEnd(eCal.getTimeInMillis());
+			cEv.setStart(mergeDate(ev.getDate(),ev.getStartT()).getTimeInMillis());
+			cEv.setEnd(mergeDate(ev.getDate(),ev.getEndT()).getTimeInMillis());
 			alRes.add(cEv);
 		}
 		model.setResult(alRes);
@@ -85,6 +79,18 @@ public class MainAjaxController extends HttpServlet {
 		String json_string = gson.toJson(model);
 		PrintWriter out = response.getWriter();
 		out.print(json_string);
+	}
+	
+	private Calendar mergeDate(Date d, Time t){
+		  Calendar dCal = Calendar.getInstance();
+		  dCal.setTime(d);
+		  Calendar tCal = Calendar.getInstance();
+		  tCal.setTime(t);
+
+		  dCal.set(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
+		  dCal.set(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
+		  dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
+		return dCal;  
 	}
 	
 	

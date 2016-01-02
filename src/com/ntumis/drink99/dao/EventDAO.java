@@ -109,16 +109,17 @@ public class EventDAO {
 		e.setName(res.getString("name"));
 		e.setDate(res.getDate("date"));
 		e.setStartT(res.getTime("startT"));
-		//e.setEndT(res.getTime("endT"));
+		e.setEndT(res.getTime("endT"));
 		e.setPlace(res.getString("place"));
 		e.setNote(res.getString("note"));
+		e.setCategory(res.getInt("category"));
 		int userID = res.getInt("enterpriser");
 		e.setEnterpriser(ud.queryById(userID));
 		return e;
 	}
 	
 	public boolean insert(Event ev) {
-		String sql = "INSERT TO event (id, date, name, enterpriser, startT, place, note) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT TO event (id, date, name, enterpriser, startT, endT, place, note, category) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());
@@ -126,8 +127,10 @@ public class EventDAO {
 			ps.setString(3, ev.getName());
 			ps.setInt(4, ev.getEnterpriser().getId());
 			ps.setTime(5, ev.getStartT());
-			ps.setString(6, ev.getPlace());
-			ps.setString(7, ev.getNote());
+			ps.setTime(6, ev.getEndT());
+			ps.setString(7, ev.getPlace());
+			ps.setString(8, ev.getNote());
+			ps.setInt(9, ev.getCategory());
 			boolean b = ps.execute();
 			ps.close();
 			return b;
@@ -138,16 +141,18 @@ public class EventDAO {
 	}
 
 	public boolean update(Event ev) {
-		String sql = "UPDATE event SET date=?, name=?, enterpriser=?, startT=?, place=?, note=? WHERE id=?";
+		String sql = "UPDATE event SET date=?, name=?, enterpriser=?, startT=?, endT=?, place=?, note=?, category=? WHERE id=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setDate(1, new java.sql.Date(ev.getDate().getTime()));
 			ps.setString(2, ev.getName());
 			ps.setInt(3, ev.getEnterpriser().getId());
 			ps.setTime(4, ev.getStartT());
-			ps.setString(5, ev.getPlace());
-			ps.setString(6, ev.getNote());
-			ps.setInt(7, ev.getId());
+			ps.setTime(5, ev.getEndT());
+			ps.setString(6, ev.getPlace());
+			ps.setString(7, ev.getNote());
+			ps.setInt(8, ev.getCategory());
+			ps.setInt(9, ev.getId());			
 			boolean b = ps.execute();
 			ps.close();
 			return b;
