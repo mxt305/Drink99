@@ -19,7 +19,7 @@ var evid = ${ data.id };
 	<div class="container">
 		<div class="page-header">
 			<h1>${ data.name }
-				<small>By ${ data.enterpriser.name }</small>
+				<small><a href="<c:url value="/user?id=" />${ data.enterpriser.id }">By ${ data.enterpriser.name }</a></small>
 			</h1>
 		</div>
 		<h2>活動資訊</h2>
