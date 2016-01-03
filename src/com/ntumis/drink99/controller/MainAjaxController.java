@@ -3,6 +3,7 @@ package com.ntumis.drink99.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,26 +23,38 @@ import com.ntumis.drink99.entity.Event;
 
 /**
  * Servlet implementation class JSONController
- * URL pattern: /json/main?y={year}&v={month/week}&mode={mode}
- * Mode: 0=month 1=week
+ * URL pattern: /json/main?from={time_form}&to={time_to}
  */
 @WebServlet("/json/main")
 public class MainAjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private int mode = 0;
-    private Calendar cal;
+    private long time_from;
+    private long time_to;
+	protected Connection conn;
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		conn = DBConnector.createConnection();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if(conn != null && !conn.isClosed()){
+			conn.close();
+		}
+	}
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public MainAjaxController() {
         super();
-        cal = Calendar.getInstance();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-type", "application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -57,14 +70,8 @@ public class MainAjaxController extends HttpServlet {
 			cEv.setTitle(String.format("%s (by %s)", ev.getName(), ev.getEnterpriser().getName()));
 			cEv.setUrl(String.format("/%s/event?id=%d", path_strs[1], ev.getId()));
 			cEv.setClass_name("event-info");
-			Calendar eCal = Calendar.getInstance();
-			eCal.setTime(ev.getDate());
-			eCal.set(Calendar.HOUR_OF_DAY, ev.getStartT().getHours());
-			eCal.set(Calendar.MINUTE, ev.getStartT().getMinutes());
-			eCal.set(Calendar.SECOND, ev.getStartT().getSeconds());
-			cEv.setStart(eCal.getTimeInMillis());
-			eCal.add(Calendar.HOUR_OF_DAY, 3);
-			cEv.setEnd(eCal.getTimeInMillis());
+			cEv.setStart(mergeDate(ev.getDate(),ev.getStartT()).getTimeInMillis());
+			cEv.setEnd(mergeDate(ev.getDate(),ev.getEndT()).getTimeInMillis());
 			alRes.add(cEv);
 		}
 		model.setResult(alRes);
@@ -74,60 +81,36 @@ public class MainAjaxController extends HttpServlet {
 		out.print(json_string);
 	}
 	
+	private Calendar mergeDate(Date d, Time t){
+		  Calendar dCal = Calendar.getInstance();
+		  dCal.setTime(d);
+		  Calendar tCal = Calendar.getInstance();
+		  tCal.setTime(t);
+
+		  dCal.set(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
+		  dCal.set(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
+		  dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
+		return dCal;  
+	}
+	
 	
 	private void getDate(HttpServletRequest request){
-		Object oMode = request.getParameter("mode");
+		Object mFrom = request.getParameter("from");
 		try {
-			int mMode = Integer.parseInt(oMode.toString());
-			if (mMode >= 0 && mMode <= 1){
-				mode = mMode;
-			}
+			time_from = Long.parseLong(mFrom.toString()) ;
 		} catch (Exception e){		
 		}
-		Object oYear = request.getParameter("y");
+		Object mTo = request.getParameter("to");
 		try {
-			int mYear = Integer.parseInt(oYear.toString());
-			if (mYear >= 1 && mYear <= 9999){
-				cal.set(Calendar.YEAR, mYear);;
-			}
-		} catch (Exception e){
-		}
-		Object oValue = request.getParameter("v");
-		try {
-			int mValue = Integer.parseInt(oValue.toString());
-			if (mode == 1){
-				if(mValue > 0 && mValue < cal.getWeeksInWeekYear()){
-					cal.setWeekDate(cal.get(Calendar.YEAR), mValue, 1);
-				} else {
-					cal.setWeekDate(cal.get(Calendar.YEAR), 1, 1);
-				}
-			} else {
-				if(mValue > 0 && mValue <= 12){
-					cal.set(Calendar.MONTH, mValue-1);
-				}			
-			}
-		} catch (Exception e){
+			time_to = Long.parseLong(mTo.toString()) ;
+		} catch (Exception e){		
 		}
 	}
 	
 	private ArrayList<Event> getEvents(){
-		Connection conn = DBConnector.createConnection();
 		EventDAO dEvent = new EventDAO(conn);
-		Date dStart;
-		Date dEnd;		
-		if (mode == 1){
-			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-			dStart = cal.getTime();
-			cal.add(Calendar.DATE, 6);
-			dEnd = cal.getTime();
-		} else {
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			dStart = cal.getTime();
-			cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-			dEnd = cal.getTime();	
-		}
-		System.out.println(dStart);
-		System.out.println(dEnd);
+		Date dStart = new Date(time_from);
+		Date dEnd= new Date(time_to);	
 		ArrayList<Event> al = dEvent.queryByPeriod(dStart, dEnd);
 		return al;
 	}
@@ -136,7 +119,6 @@ public class MainAjaxController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 }

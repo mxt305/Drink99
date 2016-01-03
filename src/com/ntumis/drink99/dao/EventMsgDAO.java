@@ -27,6 +27,8 @@ public class EventMsgDAO {
 			while (res != null && res.next()) {
 				em = resultSetToEntity(res);
 			}
+			res.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -44,6 +46,8 @@ public class EventMsgDAO {
 				EventMsg em = resultSetToEntity(res);
 				al.add(em);
 			}
+			res.close();
+			ps.close();
 			return al;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -60,7 +64,9 @@ public class EventMsgDAO {
 			ps.setInt(3, em.getAuthor().getId());
 			ps.setString(4, em.getTitle());
 			ps.setString(5, em.getContent());
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +80,9 @@ public class EventMsgDAO {
 			ps.setInt(3, em.getId());
 			ps.setString(1, em.getTitle());
 			ps.setString(2, em.getContent());
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +94,9 @@ public class EventMsgDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			return ps.execute();
+			boolean b = ps.execute();
+			ps.close();
+			return b;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -59,7 +59,7 @@ public abstract class UserPageController extends HttpServlet {
 			isLogin = (Boolean) o;
 		}
 		if(isLogin){ 
-			//user = (User) request.getAttribute("user");	
+			user = (User) request.getAttribute("user");	
 			doPreProcess(request,response);
 			switch(method){
 			case 1:

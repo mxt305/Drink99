@@ -22,11 +22,19 @@ import com.ntumis.drink99.entity.User;
  */
 @WebFilter(filterName = "AuthFilter")
 public class AuthFilter implements Filter {
-
+	protected Connection conn;
+	
 	public AuthFilter() {
-
+		conn = DBConnector.createConnection();
 	}
-
+	
+	@Override
+	protected void finalize() throws Throwable {
+		if(conn != null && !conn.isClosed()){
+			conn.close();
+		}
+	}
+	
 	public void destroy() {
 
 	}
@@ -36,31 +44,29 @@ public class AuthFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession s = req.getSession();
 		boolean isLogin = false;
-		String user = "";
+		//String user = "";
 		if (s != null) {
-			Object username = s.getAttribute("user");
+			/*Object username = s.getAttribute("user");
 			if (username != null && !username.toString().equals("")) {
 				isLogin = true;
 				user = username.toString();
-			}	
-			/*try {
+			}*/
+			try {
 				Object mUid = s.getAttribute("user");
 				int uid = Integer.parseInt(mUid.toString());
 				User u = getUserdata(uid);
 				isLogin = true;
-				user = username.toString();
 				req.setAttribute("user", u);
 			} catch (Exception e) {
-			}*/
+			}
 
 		}
-		req.setAttribute("user", user);
+		//req.setAttribute("user", user);
 		req.setAttribute("isLogin", isLogin);
 		chain.doFilter(request, response);
 	}
 
 	private User getUserdata(int id) {
-		Connection conn = DBConnector.createConnection();
 		UserDAO dUser = new UserDAO(conn);
 		User u = dUser.queryById(id);
 		return u;

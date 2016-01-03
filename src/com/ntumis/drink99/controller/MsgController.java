@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.dao.EventMsgDAO;
 import com.ntumis.drink99.entity.Event;
@@ -71,7 +72,7 @@ public class MsgController extends UserPageController {
 		if (mode == -1) {
 			EventMsgDAO dMsg = new EventMsgDAO(conn);
 			ArrayList<EventMsg> msgs = dMsg.queryByEvent(ev);
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			String json_string = gson.toJson(msgs);
 			PrintWriter out = response.getWriter();
 			out.print(json_string);
