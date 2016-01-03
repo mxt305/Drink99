@@ -17,6 +17,12 @@
 	  <p>常嚐酒久是....</p>
 	  <p><a class="btn btn-primary btn-lg" href="#" role="button">新增活動</a></p>
 	</div>
+	<div
+    class="fb-login-button"
+    data-max-rows="1"
+    data-size="xlarge"
+    data-show-faces="false"
+    data-auto-logout-link="true"></div>
 	<p>
 	</p>
 	<%@include file="main_calendar.jsp" %>
