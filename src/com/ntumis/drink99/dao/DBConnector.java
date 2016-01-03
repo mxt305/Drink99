@@ -9,7 +9,7 @@ public class DBConnector {
     private static final String DRIVER = "org.mariadb.jdbc.Driver";
     private static final String DBURL = "jdbc:mariadb://localhost:3306/drink99?useUnicode=true&characterEncoding=UTF-8";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "";
     
     public static Connection createConnection() {
         Connection conn = null;

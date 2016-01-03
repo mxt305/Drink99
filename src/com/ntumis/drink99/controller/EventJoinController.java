@@ -173,7 +173,7 @@ public class EventJoinController extends UserJsonPageController {
 
 
 	private void getModel(HttpServletRequest request) {
-		Object oId = request.getParameter("id");
+		Object oId = request.getParameter("ev");
 		try {
 			int mId = Integer.parseInt(oId.toString());
 			ev = dEv.queryById(mId);
@@ -182,7 +182,7 @@ public class EventJoinController extends UserJsonPageController {
 	}
 	
 	private User getUser(HttpServletRequest request) {
-		Object oId = request.getParameter("id");
+		Object oId = request.getParameter("u");
 		try {
 			int mId = Integer.parseInt(oId.toString());
 			User user = dUser.queryById(mId);

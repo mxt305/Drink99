@@ -18,8 +18,7 @@ public class UserDAO {
 	
 	public ArrayList<User> queryAll(){
 		String sql = "SELECT * FROM member";
-		ArrayList<User> al = new  ArrayList<>();
-		
+		ArrayList<User> al = new ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet res = ps.executeQuery();
@@ -146,7 +145,7 @@ public class UserDAO {
 	
 	public ArrayList<User> queryUserInviteByEvent(Event ev){
 		String sql = "SELECT * FROM event_join JOIN member ON event_join.memberID = member.id WHERE eventID=? AND status=0";
-		ArrayList<User> al = new ArrayList<>();
+		ArrayList<User> al = new ArrayList<User>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());

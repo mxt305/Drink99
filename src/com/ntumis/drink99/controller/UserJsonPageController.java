@@ -27,6 +27,7 @@ abstract public class UserJsonPageController extends UserPageController{
 	protected void error(String msg, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		Gson gson = new Gson();
 		JsonErrorModel model = new JsonErrorModel();
+		model.setError(msg);
 		String json_string = gson.toJson(model);
 		PrintWriter out = response.getWriter();
 		out.print(json_string);
