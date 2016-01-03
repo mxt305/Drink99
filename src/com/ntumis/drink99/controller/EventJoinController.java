@@ -2,9 +2,8 @@ package com.ntumis.drink99.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,43 +11,116 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ntumis.drink99.dao.EventDAO;
-import com.ntumis.drink99.dao.EventMsgDAO;
+import com.ntumis.drink99.dao.EventJoinDAO;
+import com.ntumis.drink99.dao.UserDAO;
 import com.ntumis.drink99.entity.Event;
-import com.ntumis.drink99.entity.EventMsg;
+import com.ntumis.drink99.entity.User;
+import com.ntumis.drink99.util.WebErrorException;
 
 @WebServlet({ "/event/join/data", "/event/join/join", "/event/join/invite", "/event/join/cancel", "/event/join/opt_out" })
-public class EventJoinController extends UserPageController {
+public class EventJoinController extends UserJsonPageController {
 
 	private int mode;
 	private Event ev;
+	private EventJoinDAO dEj;
+	private UserDAO dUser;
+	private EventDAO dEv;
 	private static final long serialVersionUID = 2379818348149455003L;
 
 	@Override
 	protected void doPostProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		int s = dEj.getUserJoinStatus(ev, getUser());
 		try {
-			EventMsgDAO dMsg = new EventMsgDAO(conn);
-			EventMsg em = null;
 			switch (mode) {
-			case 0: // add
-				em = getFormData(request, em);
-				em.setAuthor(getUser());
-				em.setTime(new Date());
-				em.setEventID(ev.getId());
-				dMsg.insert(em);
+			case 0: // join
+				if(s == -1){
+					boolean b = onInsertData(getUser());
+					if(b){
+						success("join the event successfully", response);
+					} else{
+						throw new WebErrorException("fail to join the event");
+					}
+				} else {
+					boolean b = onUpdateData(1);
+					if(b){
+						success("join event successfully", response);
+					} else {
+						throw new WebErrorException("fail to join the event");
+					}
+				}
 				break;
-			case 1: // edit
-				Object mId = request.getParameter("id");
-				int id = Integer.parseInt(mId.toString());
-				em = getFormData(request, dMsg.queryById(id));
-				dMsg.update(em);
+			case 1: // invite
+				User oUser = getUser(request);
+				s =  dEj.getUserJoinStatus(ev, oUser);
+				if (!getUser().equals(oUser)){
+					if(s == -1){
+						boolean b = onInsertData(oUser);
+						if(b){
+							success("join event successfully", response);
+						} else{
+							throw new WebErrorException("fail to join event");
+						}
+					} else if(s == 0) {
+						throw new WebErrorException("This user has already to be invited");
+					} else if(s == 1) {
+						throw new WebErrorException("This user has already to join the event");
+					} else if(s == 2) {
+						throw new WebErrorException("This user has already to opt out the event");
+					} else {
+						throw new WebErrorException("invaild status value");
+					}
+				} else {
+					throw new WebErrorException("you can not invite yourself");
+				}
+				break;
+			case 2: // cancel
+				if(s == -1){
+					throw new WebErrorException("data is not exist");
+				} else {
+					boolean b = onCancelData();
+					if(b){
+						success("cancel successfully", response);
+					} else{
+						throw new WebErrorException("failed to delete data");
+					}
+				}
+				break;
+			case 3: // opt_out
+				if(s == -1){
+					throw new WebErrorException("data is not exist");
+				} else if(s == 2) {
+					throw new WebErrorException("You has already to opt out of the event");
+				} else {
+					boolean b = onUpdateData(2);
+					if(b){
+						success("Opt out of the event successfully", response);
+					} else{
+						throw new WebErrorException("failed to Opt out of the event");
+					}
+				}
 				break;
 			}
 		} catch (Exception e) {
 
 		}
+	}
+	
+	private boolean onInsertData(User u){
+		if(u.equals(getUser())){
+			return dEj.insert(ev, u, 1);
+		} else {
+			return dEj.insert(ev, u, 0);
+		}
+	}
+	
+	private boolean onUpdateData(int status){
+		return dEj.update(ev, getUser(), status);
+	}
+	
+	private boolean onCancelData(){
+		return dEj.delete(ev, getUser());
 	}
 
 	private void getMode(HttpServletRequest request) {
@@ -72,10 +144,11 @@ public class EventJoinController extends UserPageController {
 	protected void process(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (mode == -1) {
-			EventMsgDAO dMsg = new EventMsgDAO(conn);
-			ArrayList<EventMsg> msgs = dMsg.queryByEvent(ev);
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-			String json_string = gson.toJson(msgs);
+			HashMap<String, ArrayList<User>> map = new HashMap<>();
+			map.put("invitees", dUser.queryUserInviteByEvent(ev));
+			map.put("participants", dUser.queryUserJoinByEvent(ev));
+			Gson gson = new Gson();
+			String json_string = gson.toJson(map);
 			PrintWriter out = response.getWriter();
 			out.print(json_string);
 		} else {
@@ -85,41 +158,39 @@ public class EventJoinController extends UserPageController {
 
 	@Override
 	protected void doPreProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
+		super.doPreProcess(request, response);
+		dUser = new UserDAO(conn);
+		dEv = new EventDAO(conn);
+		dEj = new EventJoinDAO(conn);
 		getMode(request);
-		getModel(request, conn);
+		getModel(request);		
 		if (ev == null) {
-			// if the event is not exist
-			// TODO code here
+			throw new WebErrorException("the event is not exist");
 		}
-		response.setHeader("Content-type", "application/json");
-		response.setCharacterEncoding("UTF-8");
+
 	}
 
-	private EventMsg getFormData(HttpServletRequest request, EventMsg em) {
-		// boolean valid = true;
+
+	private void getModel(HttpServletRequest request) {
+		Object oId = request.getParameter("id");
 		try {
-			Object mTitle = request.getParameter("title");
-			Object mContent = request.getParameter("content");
-			if (em == null) {
-				em = new EventMsg();
-			}
-			em.setTitle(mTitle.toString());
-			em.setContent(mContent.toString());
-			return em;
+			int mId = Integer.parseInt(oId.toString());
+			ev = dEv.queryById(mId);
+		} catch (Exception e) {
+		}
+	}
+	
+	private User getUser(HttpServletRequest request) {
+		Object oId = request.getParameter("id");
+		try {
+			int mId = Integer.parseInt(oId.toString());
+			User user = dUser.queryById(mId);
+			return user;
 		} catch (Exception e) {
 		}
 		return null;
 	}
 
-	private void getModel(HttpServletRequest request, Connection conn) {
-		Object oId = request.getParameter("id");
-		try {
-			int mId = Integer.parseInt(oId.toString());
-			EventDAO dEvent = new EventDAO(conn);
-			ev = dEvent.queryById(mId);
-		} catch (Exception e) {
-		}
-	}
-
 }
+

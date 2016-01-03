@@ -2,7 +2,6 @@ package com.ntumis.drink99.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,9 +16,10 @@ import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.dao.EventMsgDAO;
 import com.ntumis.drink99.entity.Event;
 import com.ntumis.drink99.entity.EventMsg;
+import com.ntumis.drink99.util.WebErrorException;
 
 @WebServlet({ "/event/msg/data", "/event/msg/edit", "/event/msg/add" })
-public class MsgController extends UserPageController {
+public class MsgController extends UserJsonPageController {
 
 	private int mode;
 	private Event ev;
@@ -27,7 +27,7 @@ public class MsgController extends UserPageController {
 
 	@Override
 	protected void doPostProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
 		try {
 			EventMsgDAO dMsg = new EventMsgDAO(conn);
 			EventMsg em = null;
@@ -47,7 +47,7 @@ public class MsgController extends UserPageController {
 				break;
 			}
 		} catch (Exception e) {
-
+			throw new WebErrorException(e.getMessage());
 		}
 	}
 
@@ -83,12 +83,11 @@ public class MsgController extends UserPageController {
 
 	@Override
 	protected void doPreProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
 		getMode(request);
-		getModel(request, conn);
+		getModel(request);
 		if (ev == null) {
-			// if the event is not exist
-			// TODO code here
+			throw new WebErrorException("the event is not exist");
 		}
 		response.setHeader("Content-type", "application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -110,13 +109,14 @@ public class MsgController extends UserPageController {
 		return null;
 	}
 
-	private void getModel(HttpServletRequest request, Connection conn) {
+	private void getModel(HttpServletRequest request) {
 		Object oId = request.getParameter("id");
 		try {
 			int mId = Integer.parseInt(oId.toString());
 			EventDAO dEvent = new EventDAO(conn);
 			ev = dEvent.queryById(mId);
 		} catch (Exception e) {
+			
 		}
 	}
 

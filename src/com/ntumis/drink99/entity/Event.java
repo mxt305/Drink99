@@ -1,7 +1,6 @@
 package com.ntumis.drink99.entity;
 
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Event {
@@ -70,17 +69,5 @@ public class Event {
 	}
 	public void setPlace(String place) {
 		this.place = place;
-	}
-	
-	public ArrayList<User> getParticipants(){
-		return null;
-	}
-	
-	public ArrayList<User> getInvitees(){
-		return null;
-	}
-	
-	public ArrayList<User> getRejectees(){
-		return null;
 	}
 }

@@ -2,6 +2,7 @@ package com.ntumis.drink99.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ntumis.drink99.entity.Event;
@@ -57,6 +58,24 @@ public class EventJoinDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int getUserJoinStatus(Event ev, User u){
+		String sql = "SELECT * FROM `event_join` WHERE `eventID`=? AND `memberID`=?";
+		int s = -1;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ev.getId());
+			ps.setInt(2, u.getId());
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				s = res.getInt("status");
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+		}
+		return s;
 	}
 
 }

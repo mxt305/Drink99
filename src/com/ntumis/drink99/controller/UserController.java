@@ -1,7 +1,6 @@
 package com.ntumis.drink99.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ public class UserController extends UserPageController {
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		getModel(request, conn);
+		getModel(request);
 		request.setAttribute("data", user);
 		// show view
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user.jsp");
@@ -29,7 +28,7 @@ public class UserController extends UserPageController {
 		
 	}
 
-	private void getModel(HttpServletRequest request, Connection conn) {
+	private void getModel(HttpServletRequest request) {
 		Object oId = request.getParameter("id");
 		try {
 			int mId = Integer.parseInt(oId.toString());

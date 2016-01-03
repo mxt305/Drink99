@@ -143,5 +143,42 @@ public class UserDAO {
 		}
 		return al;
 	}
-
+	
+	public ArrayList<User> queryUserInviteByEvent(Event ev){
+		String sql = "SELECT * FROM event_join JOIN member ON event_join.memberID = member.id WHERE eventID=? AND status=0";
+		ArrayList<User> al = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ev.getId());
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				User u = resultSetToEntity(res);
+				al.add(u);
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
+	
+	public ArrayList<User> queryUserJoinByEvent(Event ev){
+		String sql = "SELECT * FROM event_join JOIN member ON event_join.memberID = member.id WHERE eventID=? AND status=1";
+		ArrayList<User> al = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ev.getId());
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				User u = resultSetToEntity(res);
+				al.add(u);
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return al;
+	}
 }

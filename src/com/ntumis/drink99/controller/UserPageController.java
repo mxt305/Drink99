@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ntumis.drink99.dao.DBConnector;
 import com.ntumis.drink99.entity.User;
+import com.ntumis.drink99.util.WebErrorException;
 
 /**
  * Servlet implementation class UserPageController
@@ -52,44 +53,51 @@ public abstract class UserPageController extends HttpServlet {
 	}
 
 	private void doAuth(HttpServletRequest request, HttpServletResponse response,int method) throws ServletException, IOException {
-		//HttpSession session = request.getSession();
-		boolean isLogin = false;
-		Object o = request.getAttribute("isLogin");
-		if(o != null && o instanceof Boolean){
-			isLogin = (Boolean) o;
-		}
-		if(isLogin){ 
-			user = (User) request.getAttribute("user");	
-			doPreProcess(request,response);
-			switch(method){
-			case 1:
-				doGetProcess(request,response);
-				break;
-			case 2:
-				doPostProcess(request,response);
-				break;
+		try{
+			boolean isLogin = false;
+			Object o = request.getAttribute("isLogin");
+			if(o != null && o instanceof Boolean){
+				isLogin = (Boolean) o;
 			}
-			process(request,response);
-		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
-			rd.forward(request, response);
+			if(isLogin){
+					user = (User) request.getAttribute("user");	
+					doPreProcess(request,response);
+					switch(method){
+					case 1:
+						doGetProcess(request,response);
+						break;
+					case 2:
+						doPostProcess(request,response);
+						break;
+					}
+					process(request,response);
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
+				rd.forward(request, response);
+			}
+		}catch(WebErrorException we){
+			error(we.getMessage(), request, response);
 		}
 	}
 
-	protected void doPreProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPreProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, WebErrorException {
 		
 	}	
 	
-	protected void doGetProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGetProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, WebErrorException {
 		
 	}
 	
-	protected void doPostProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPostProcess (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, WebErrorException {
 		
 	}
 	
-	abstract protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+	abstract protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, WebErrorException;
 
-	
+	protected void error(String msg, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		request.setAttribute("msg", msg);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+		rd.forward(request, response);
+	}
 
 }

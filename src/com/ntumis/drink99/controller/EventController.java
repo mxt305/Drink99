@@ -1,7 +1,6 @@
 package com.ntumis.drink99.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ public class EventController extends UserPageController {
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {	
-		getModel(request,conn);
+		getModel(request);
 		if (ev==null){
 			//if the event is not exist
 			//TODO code here
@@ -33,7 +32,7 @@ public class EventController extends UserPageController {
 		}
 	}
 	
-	private void getModel(HttpServletRequest request,Connection conn){
+	private void getModel(HttpServletRequest request){
 		Object oId = request.getParameter("id");
 		try {
 			int mId = Integer.parseInt(oId.toString());

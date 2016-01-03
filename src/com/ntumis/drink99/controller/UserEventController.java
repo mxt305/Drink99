@@ -2,7 +2,6 @@ package com.ntumis.drink99.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -17,7 +16,7 @@ import com.ntumis.drink99.entity.Event;
 import com.ntumis.drink99.entity.User;
 
 @WebServlet("/user/event")
-public class UserEventController extends UserPageController {
+public class UserEventController extends UserJsonPageController {
 
 	private User user;
 	private int status = 0;
@@ -26,10 +25,7 @@ public class UserEventController extends UserPageController {
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		getModel(request, conn);
-		response.setHeader("Content-type", "application/json");
-		response.setCharacterEncoding("UTF-8");
-		//request.setAttribute("data", user);
+		getModel(request);
 		EventDAO dEv = new EventDAO(conn);
 		ArrayList<Event> evs = dEv.queryByUser(user, status);
 		Gson gson = new Gson();
@@ -38,7 +34,7 @@ public class UserEventController extends UserPageController {
 		out.print(json_string);
 	}
 
-	private void getModel(HttpServletRequest request, Connection conn) {
+	private void getModel(HttpServletRequest request) {
 		Object oId = request.getParameter("id");
 		try {
 			int mId = Integer.parseInt(oId.toString());
