@@ -23,13 +23,6 @@
 	  <h1>常嚐酒久!</h1>
 	  <p>常嚐酒久是....</p>
 	  <p><a class="btn btn-primary btn-lg" href="#" role="button">新增活動</a></p>
-	  <div
-    	class="fb-login-button"
-   		data-max-rows="1"
-    	data-size="xlarge"
-    	data-show-faces="false"
-    	data-auto-logout-link="true"></div>
-	</div>
 
 	<p>
 	</p>
