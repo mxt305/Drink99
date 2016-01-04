@@ -12,16 +12,16 @@
 		</button>
 		<a class="navbar-brand" href="<c:url value="/" />">常嚐酒久</a>
 	</div>
-	<div id="navbar" class="navbar-collapse collapse">
+	<p class="navbar-text navbar-right">
 		<c:choose>
 		<c:when test="${ isLogin }">
-		user:${ user.name }
+		user:<a href="<c:url value="/user" />" class="navbar-link">${ user.name }</a>
 		</c:when>
 		<c:otherwise>
 		未登入 請先登入
 		</c:otherwise>
 		</c:choose>
-	</div>
+	</p>
 	<!--/.navbar-collapse -->
 </div>
 </nav>

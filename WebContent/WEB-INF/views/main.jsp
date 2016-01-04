@@ -34,8 +34,7 @@
 	<p>
 	</p>
 	<%@include file="main_calendar.jsp" %>
-	<p>123456789</p>
-	<p>${ today }</p>
+	<%@include file="footer.jsp" %>
 </div>
 </body>
 </html>
