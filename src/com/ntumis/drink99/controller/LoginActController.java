@@ -28,12 +28,12 @@ public class LoginActController extends HttpServlet {
 
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*String act = request.getParameter("act");
+		String act = request.getParameter("act");
 		if(act!=null && act.equals("logout")){
 			HttpSession session = request.getSession();
 			session.invalidate();
 		}
-		redirct(request, response);*/
+		redirct(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,7 +83,7 @@ public class LoginActController extends HttpServlet {
 
 	
 	private void redirct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		response.sendRedirect(request.getContextPath() + "/simple");
+		response.sendRedirect(request.getContextPath() + "/");
 	}
 
 }
