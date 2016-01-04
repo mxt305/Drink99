@@ -15,11 +15,12 @@ $(function() {
 			fb_name : name,
 			token : token
 		}, function(data) {
-			if (data.success == 1) {
+			/*if (data.success == 1) {
 				// 登入成功
 			} else {
 				// 登入失敗
-			}
+			}*/
+			window.location.href = baseUrl;
 		});
 	}
 	function fb_login() {

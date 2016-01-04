@@ -10,19 +10,14 @@
 <link rel="stylesheet" href="<c:url value="/css/calendar.min.css" />">
 </head>
 <body>
-<script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.5&appId=1016184181753221";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 <%@include file="user_area.jsp" %>
 <div class="container">
 	<div class="jumbotron">
 	  <h1>常嚐酒久!</h1>
 	  <p>常嚐酒久是....</p>
-	  <p><a class="btn btn-primary btn-lg" href="#" role="button">新增活動</a></p>
+	  <c:if test="${ isLogin }">
+	  <p><a class="btn btn-primary btn-lg" href="<c:url value="/event/add" />" role="button">新增活動</a></p>
+	  </c:if>
 </div>
 
 	<p>

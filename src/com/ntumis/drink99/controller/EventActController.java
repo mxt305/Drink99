@@ -20,10 +20,7 @@ public class EventActController extends UserPageController {
 	private int mode;
 	private static final long serialVersionUID = -312343616281541301L;
 	
-	public EventActController(){
-		
-		
-		
+	public EventActController(){	
 		
 		sdf = new SimpleDateFormat("y-M-d");
 		sdf_time = new SimpleDateFormat("H:m");
@@ -72,7 +69,7 @@ public class EventActController extends UserPageController {
 				ev.setEnterpriser(getUser());
 				ev.setId(dEvent.getNewId());
 				dEvent.insert(ev);
-				redirct(request, response, "/event/?id=" + ev.getId());
+				redirct(request, response, "/event?id=" + ev.getId());
 				break;
 			case 1: // edit
 				Object mId = request.getParameter("id");
