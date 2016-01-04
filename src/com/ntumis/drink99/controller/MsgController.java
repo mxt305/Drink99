@@ -45,6 +45,11 @@ public class MsgController extends UserJsonPageController {
 				em = getFormData(request, dMsg.queryById(id));
 				dMsg.update(em);
 				break;
+			case 2: //delete
+				Object mId1 = request.getParameter("id");
+				int id1 = Integer.parseInt(mId1.toString());
+				em = getFormData(request, dMsg.queryById(id1));
+				dMsg.delete(id1);
 			}
 		} catch (Exception e) {
 			throw new WebErrorException(e.getMessage());
