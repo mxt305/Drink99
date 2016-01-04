@@ -7,10 +7,10 @@ FB.init({
 });
 $(function() {
 	$("#FBLogin").click(function() {
-
+		fb_login();
 	});
 	function app_login(id, name, token) {
-		$.post(baseUrl + "/login/fb", {
+		$.post(baseUrl + "login/fb", {
 			fb_id : id,
 			fb_name : name,
 			token : token

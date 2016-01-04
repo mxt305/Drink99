@@ -71,12 +71,15 @@ public class UserDAO {
 	}
 	
 	public boolean insert(User u) {
-			String sql = "INSERT TO member (id, name, fbID) VALUES ( ?, ?, ?)";
+			String sql = "INSERT INTO member (id, name, fbID, lastIP, lastDate, regDate) VALUES ( ?, ?, ?, ?, ?, ?)";
 			try {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setInt(1, u.getId());
 				ps.setString(2, u.getName());
 				ps.setString(3, u.getFbid());
+				ps.setString(4, u.getLastIP());
+				ps.setDate(5, new java.sql.Date(u.getLastDate().getTime()));
+				ps.setDate(6, new java.sql.Date(u.getRegDate().getTime()));
 				boolean b = ps.execute();
 				ps.close();
 				return b;
@@ -87,11 +90,13 @@ public class UserDAO {
 	}
 
 	public boolean update(User u) {
-		String sql = "UPDATE member SET name=? WHERE id=?";
+		String sql = "UPDATE member SET name=?, lastIP=?, lastDate=? WHERE id=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getName());
-			ps.setInt(2, u.getId());		
+			ps.setString(2, u.getLastIP());
+			ps.setDate(3, new java.sql.Date(u.getLastDate().getTime()));
+			ps.setInt(4, u.getId());		
 			boolean b = ps.execute();
 			ps.close();
 			return b;
@@ -120,6 +125,9 @@ public class UserDAO {
 		u.setId(res.getInt("id"));
 		u.setName(res.getString("name"));
 		u.setFbid(res.getString("fbID"));
+		u.setLastIP(res.getString("lastIP"));
+		u.setLastDate(res.getDate("lastDate"));
+		u.setRegDate(res.getDate("regDate"));
 		return u;
 	}
 	
@@ -179,5 +187,22 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return al;
+	}
+	public int getNewId(){
+		String sql = "SELECT id FROM member Order BY id DESC LIMIT 1";
+		int i = 1;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				int lastId = res.getInt("id");
+				i = lastId+1;
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
 	}
 }

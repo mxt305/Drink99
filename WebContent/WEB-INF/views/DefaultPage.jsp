@@ -14,7 +14,7 @@
 	<!-- 已登入畫面 -->
 	<p>已登入</p>
 	<p>帳號：${ user.name }</p>
-	<p><a href="<c:url value="/login?act=logout" />">登出</a></p>
+	<p><a href="<c:url value="/login/simple?act=logout" />">登出</a></p>
 	<p>
 	<c:forEach var="u" items="${ users }">
 	${ u.id }.${ u.name } <br />
@@ -24,7 +24,7 @@
 	<c:otherwise>
 	<!-- 未登入畫面 -->
 	<p>尚未登入，請先登入
-	<form method="post" action="<c:url value="/login" />">
+	<form method="post" action="<c:url value="/login/simple" />">
 		<!-- <p>帳號：<input type="text" name="user" maxlength="10" /></p> -->
 		<p>Uid：<input type="number" name="userid" maxlength="6" /></p> 
 		<p><input type="submit" /></p>

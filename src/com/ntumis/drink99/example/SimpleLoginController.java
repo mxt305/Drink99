@@ -1,8 +1,7 @@
-package com.ntumis.drink99.controller;
+package com.ntumis.drink99.example;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,69 +17,41 @@ import com.ntumis.drink99.entity.User;
 /**
  * Servlet implementation class LoginController
  */
-@WebServlet("/login/fb")
-public class LoginActController extends HttpServlet {
+@WebServlet("/login/simple")
+public class SimpleLoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public LoginActController() {
+    public SimpleLoginController() {
         super();
     }
 
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*String act = request.getParameter("act");
+		String act = request.getParameter("act");
 		if(act!=null && act.equals("logout")){
 			HttpSession session = request.getSession();
 			session.invalidate();
 		}
-		redirct(request, response);*/
+		redirct(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User u = getFBUserData(request);
-		if(u != null){
+		try{
+			String uid = request.getParameter("userid");
 			Connection conn = DBConnector.createConnection();
 			UserDAO dUser = new UserDAO(conn);
-			User ud = dUser.queryByFbId(u.getFbid());
-			if (ud == null){
-				u.setId(dUser.getNewId());
-				u.setRegDate(new Date());
-				u.setLastDate(new Date());
-				u.setLastIP(request.getRemoteAddr());
-				dUser.insert(u);
-				ud = dUser.queryByFbId(u.getFbid());
-			}else{
-				if (!u.getName().equals(ud.getName())){
-					ud.setName(u.getName());
-				}
-				ud.setLastDate(new Date());
-				ud.setLastIP(request.getRemoteAddr());
-				dUser.update(ud);
-			}
-			if(ud != null){
-				HttpSession session = request.getSession();
+			User ud = dUser.queryById(Integer.parseInt(uid));
+			HttpSession session = request.getSession();
+			if (ud != null){
 				session.setAttribute("user", ud.getId());
+			} else {
+				request.setAttribute("errMsg", "invalid uid");
 			}
+		} catch(Exception e){
+			
 		}
 		redirct(request, response);
 	}
-	
-	private User getFBUserData(HttpServletRequest request) {
-		// boolean valid = true;
-		try {
-			Object mName = request.getParameter("fb_name");
-			Object mFbID = request.getParameter("fb_id");
-			//Object mToken = request.getParameter("token");
-			User u = new User();
-			u.setName(mName.toString());
-			u.setFbid(mFbID.toString());			
-			return u;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	
 	private void redirct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		response.sendRedirect(request.getContextPath() + "/simple");
