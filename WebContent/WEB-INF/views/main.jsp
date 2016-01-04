@@ -23,6 +23,7 @@
 	  <h1>常嚐酒久!</h1>
 	  <p>常嚐酒久是....</p>
 	  <p><a class="btn btn-primary btn-lg" href="#" role="button">新增活動</a></p>
+</div>
 
 	<p>
 	</p>
