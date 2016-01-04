@@ -29,6 +29,6 @@
 	</p>
 	<%@include file="main_calendar.jsp" %>
 	<%@include file="footer.jsp" %>
-</div>
+
 </body>
 </html>
