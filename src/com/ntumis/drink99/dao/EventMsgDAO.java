@@ -74,12 +74,13 @@ public class EventMsgDAO {
 	}
 
 	public boolean update(EventMsg em) {
-		String sql = "UPDATE event_msg SET title=?, content=? WHERE id=?";
+		String sql = "UPDATE event_msg SET title=?, content=?, time=? WHERE id=?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(3, em.getId());
+			ps.setInt(4, em.getId());
 			ps.setString(1, em.getTitle());
 			ps.setString(2, em.getContent());
+			ps.setDate(3, new java.sql.Date(em.getTime().getTime()));
 			boolean b = ps.execute();
 			ps.close();
 			return b;

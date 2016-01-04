@@ -81,8 +81,7 @@ public class MsgController extends UserJsonPageController {
 			String json_string = gson.toJson(msgs);
 			PrintWriter out = response.getWriter();
 			out.print(json_string);
-		} else {
-
+		} else{
 		}
 	}
 

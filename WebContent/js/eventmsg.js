@@ -28,4 +28,40 @@ $(function(){
 		
 	}
 	
+	//test
+//	(function(){
+//		  
+//		  $('.floatlabel').SmartPlaceholders();
+//		  
+//		  var $form = $('#form'),
+//		      $success = $('.success'),
+//		      $smart = $('.smart-placeholder-wrapper'),
+//		      parsley = $form.parsley();
+//		  
+//		  $form.submit(function(e) {
+//		    e.preventDefault();
+//		    if (parsley.validationResult == true) {
+//		      var name = $('#name').val();
+//		      success(name);
+//		      clearForm(this); 
+//		    }
+//		  });
+//		  
+//		  function success(name) {
+//
+//		    var text = $('#text');
+//		    $('#msglist').append('<li>' + text + '</li>');
+//
+//		  }
+//		  
+//		  function clearForm(el) {
+//		    el.reset();
+//		    $smart.removeClass('focused, populated');
+//		  }
+//		  
+//		})();
+//
+//
+//
+//	
 });
