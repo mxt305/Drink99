@@ -18,10 +18,11 @@
 <%@include file="user_area.jsp" %>
 <div class="container">
 <div class="jumbotron">
+
 <h1>常嚐酒久 - 登入</h1>
-	<input id="FBLogin" type="button" value="UID" />
-	<div class="fb-login-button" data-max-rows="1" data-size="xlarge"
-		data-show-faces="false" data-auto-logout-link="true"></div>
+	<tr><td align="center" valign="center">
+	<img id="FBLogin" alt="" src="<c:url value="/img/fb-login.png" />" />
+	</td></tr>
 </div>
 </div>
 </body>
