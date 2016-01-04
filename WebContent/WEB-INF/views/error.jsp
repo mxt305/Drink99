@@ -11,8 +11,8 @@
 <h3>
 <fmt:message key="ServerError"/>
 </h3>
-<a href="http://140.115.82.37:8080/Drink99/" target="_blank" title="back">回首頁</a>
+<a href="<c:url value="/" />" target="_blank" title="back">回首頁</a>
 <p>
-: ${pageContext.errorData.throwable.cause}
+: ${msg}
 </body>
 </html>
