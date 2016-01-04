@@ -17,7 +17,7 @@ public class EventJoinDAO {
 
 	public boolean insert(Event ev, User u, int status) {
 		if (status < 3 || status >= 0) {
-			String sql = "INSERT TO event_join (eventID, memberID, status) VALUES ( ?, ?, ?)";
+			String sql = "INSERT INTO event_join (eventID, memberID, status) VALUES ( ?, ?, ?)";
 			try {
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setInt(1, ev.getId());

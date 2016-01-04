@@ -119,7 +119,7 @@ public class EventDAO {
 	}
 	
 	public boolean insert(Event ev) {
-		String sql = "INSERT TO event (id, date, name, enterpriser, startT, endT, place, note, category) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO event (id, date, name, enterpriser, startT, endT, place, note, category) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());
@@ -174,6 +174,24 @@ public class EventDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int getNewId(){
+		String sql = "SELECT id FROM event Order BY id DESC LIMIT 1";
+		int i = 1;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				int lastId = res.getInt("id");
+				i = lastId+1;
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
 	}
 	
 }

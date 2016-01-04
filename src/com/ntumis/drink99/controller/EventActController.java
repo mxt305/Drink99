@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +21,12 @@ public class EventActController extends UserPageController {
 	private static final long serialVersionUID = -312343616281541301L;
 	
 	public EventActController(){
+		
+		
+		
+		
 		sdf = new SimpleDateFormat("y-M-d");
-		sdf_time = new SimpleDateFormat("H:m:s");
+		sdf_time = new SimpleDateFormat("H:m");
 	}
 	
 	@Override
@@ -31,7 +36,7 @@ public class EventActController extends UserPageController {
 
 		switch (mode) {
 		case 0: // add
-			//TODO show add view
+			showView(request, response);
 			break;
 		case 1: // edit
 			try {
@@ -40,13 +45,18 @@ public class EventActController extends UserPageController {
 				int id = Integer.parseInt(mId.toString());
 				Event ev = dEvent.queryById(id);
 				request.setAttribute("data", ev);
-				//TODO show add view
+				showView(request, response);
 			} catch (Exception e) {
 
 			}
 			break;
 		}
 
+	}
+	
+	private void showView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/event_form.jsp");
+		rd.forward(request, response);
 	}
 	
 	@Override
@@ -60,7 +70,9 @@ public class EventActController extends UserPageController {
 			case 0: // add
 				ev = getFormData(request, ev);
 				ev.setEnterpriser(getUser());
+				ev.setId(dEvent.getNewId());
 				dEvent.insert(ev);
+				redirct(request, response, "/event/?id=" + ev.getId());
 				break;
 			case 1: // edit
 				Object mId = request.getParameter("id");
@@ -92,20 +104,25 @@ public class EventActController extends UserPageController {
 		// boolean valid = true;
 		try {
 			Object mName = request.getParameter("name");
+			Object mCat = request.getParameter("cat");
 			Object mDate = request.getParameter("date");
 			Object mStartT = request.getParameter("startT");
+			Object mEndT = request.getParameter("endT");
 			Object mPlace = request.getParameter("place");
 			Object mNote = request.getParameter("note");
 			if (ev == null) {
 				ev = new Event();
 			}
 			ev.setName(mName.toString());
+			ev.setCategory(Integer.parseInt(mCat.toString()));
 			ev.setDate(sdf.parse(mDate.toString()));
 			ev.setStartT(new Time(sdf_time.parse(mStartT.toString()).getTime()));
+			ev.setEndT(new Time(sdf_time.parse(mEndT.toString()).getTime()));
 			ev.setPlace(mPlace.toString());
 			ev.setNote(mNote.toString());
 			return ev;
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -116,4 +133,7 @@ public class EventActController extends UserPageController {
 
 	}
 
+	private void redirct(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException{
+		response.sendRedirect(request.getContextPath() + url);
+	}
 }
