@@ -13,6 +13,7 @@ var baseurl = "<c:url value="/" />";
 var evid = ${ data.id };
 </script>
 <script src="<c:url value="/js/eventmsg.js" />"></script>
+<script src="<c:url value="/js/eventmem.js" />"></script>
 </head>
 <body>
 	<%@include file="user_area.jsp"%>

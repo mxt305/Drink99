@@ -3,7 +3,7 @@ $(function(){
 	function load_mem(){
 		$("#b_mem0").text("");
 		$("#b_mem1").text("");
-		$.getJSON(baseurl + "/event/join/data?id=" + evid, function(data){
+		$.getJSON(baseurl + "/event/join/data?ev=" + evid, function(data){
 			var inv = data.invitees;
 			$.each(inv,function(i, v){
 				$.tmpl( $("#event_join_tmpl"), v ).appendTo( "#b_mem0" );
