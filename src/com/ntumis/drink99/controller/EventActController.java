@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.entity.Event;
+import com.ntumis.drink99.util.WebErrorException;
 
 @WebServlet({ "/event/add", "/event/edit" })
 public class EventActController extends UserPageController {
@@ -28,23 +29,27 @@ public class EventActController extends UserPageController {
 	
 	@Override
 	protected void doGetProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
 		getMode(request);
-
+		request.setAttribute("mode", mode);
 		switch (mode) {
 		case 0: // add
 			showView(request, response);
 			break;
 		case 1: // edit
-			try {
+			try {				
 				EventDAO dEvent = new EventDAO(conn);
 				Object mId = request.getParameter("id");
 				int id = Integer.parseInt(mId.toString());
 				Event ev = dEvent.queryById(id);
-				request.setAttribute("data", ev);
-				showView(request, response);
+				if(ev.getEnterpriser().equals(getUser())){
+					request.setAttribute("data", ev);
+					showView(request, response);
+				} else {
+					throw new WebErrorException("權限不足");
+				}
 			} catch (Exception e) {
-
+				throw new WebErrorException(e.getMessage());
 			}
 			break;
 		}
@@ -72,10 +77,15 @@ public class EventActController extends UserPageController {
 				redirct(request, response, "/event?id=" + ev.getId());
 				break;
 			case 1: // edit
-				Object mId = request.getParameter("id");
-				int id = Integer.parseInt(mId.toString());
-				ev = getFormData(request, dEvent.queryById(id));
-				dEvent.update(ev);
+					Object mId = request.getParameter("id");
+					int id = Integer.parseInt(mId.toString());
+					ev = dEvent.queryById(id);
+					if(getUser().equals(ev.getEnterpriser())){
+					ev = getFormData(request, ev);
+					dEvent.update(ev);
+				} else {
+					throw new WebErrorException("權限不足");
+				}
 				break;
 			}
 		} catch (Exception e) {
@@ -93,8 +103,7 @@ public class EventActController extends UserPageController {
 			mode = 1;
 		} else if (sMode.equals("delete")) {
 			mode = 2;
-		}
-		System.out.println(sMode);
+		};
 	}
 
 	private Event getFormData(HttpServletRequest request, Event ev) {

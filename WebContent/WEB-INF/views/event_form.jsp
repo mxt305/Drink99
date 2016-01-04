@@ -12,7 +12,12 @@
 <body>
 	<%@include file="user_area.jsp"%>
 	<div class="container">
-		<h2>新增活動</h2>
+		<div class="page-header">
+		<c:choose>
+		<c:when test="${ mode == 0 }"><h2>新增活動</h2></c:when>
+		<c:otherwise><h2>修改活動</h2></c:otherwise>
+		</c:choose>
+	</div>
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<form class="form-horizontal" method="post">
@@ -20,20 +25,23 @@
 						<label for="ev_name" class="col-sm-2 control-label">活動類型</label>
 						<div class="col-sm-10">
 							<label class="radio-inline"> <input type="radio"
-								name="cat" id="ev_cat1" value="1">
+								name="cat" id="ev_cat1" value="0">
 								1
 							</label> <label class="radio-inline"> <input type="radio"
-								name="cat" id="ev_cat2" value="2">
+								name="cat" id="ev_cat2" value="1">
 								2
 							</label> <label class="radio-inline"> <input type="radio"
-								name="cat" id="ev_cat3" value="3">
+								name="cat" id="ev_cat3" value="2">
 								3
 							</label><label class="radio-inline"> <input type="radio"
-								name="cat" id="ev_cat3" value="4">
+								name="cat" id="ev_cat3" value="3">
 								4
 							</label><label class="radio-inline"> <input type="radio"
-								name="cat" id="ev_cat3" value="5">
+								name="cat" id="ev_cat3" value="4">
 								5
+							</label><label class="radio-inline"> <input type="radio"
+								name="cat" id="ev_cat3" value="5">
+								6
 							</label>
 						</div>
 					</div>
@@ -41,40 +49,40 @@
 						<label for="ev_name" class="col-sm-2 control-label">活動名稱</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="ev_name" name="name"
-								placeholder="Drinking happyday..." maxlength="80" />
+								placeholder="Drinking happyday..." maxlength="80" value="${ data.name }" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_date" class="col-sm-2 control-label">活動日期</label>
 						<div class="col-sm-10">
-							<input type="date" class="form-control" id="ev_date" name="date" />
+							<input type="date" class="form-control" id="ev_date" name="date" value="${ data.date }" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_startT" class="col-sm-2 control-label">開始時間</label>
 						<div class="col-sm-10">
 							<input type="time" class="form-control" id="ev_startT"
-								name="startT" />
+								name="startT" value="${ data.startT }" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_endT" class="col-sm-2 control-label">結束時間</label>
 						<div class="col-sm-10">
-							<input type="time" class="form-control" id="ev_endT" name="endT" />
+							<input type="time" class="form-control" id="ev_endT" name="endT" value="${ data.endT }" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_place" class="col-sm-2 control-label">活動地點</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="ev_place"
-								name="place" maxlength="50" />
+								name="place" maxlength="50" value="${ data.place }" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_note" class="col-sm-2 control-label">活動描述</label>
 						<div class="col-sm-10">
 							<textarea id="ev_note" name="note" class="form-control" rows="5"
-								placeholder="Let's party time!"></textarea>
+								placeholder="Let's party time!">${ data.note }</textarea>
 						</div>
 					</div>
 					<div class="form-group">

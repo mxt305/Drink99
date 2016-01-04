@@ -25,8 +25,10 @@
 					<dd>${ data.name }</dd>
 					<dt>ID</dt>
 					<dd>${ data.id }</dd>
+					<dt>註冊時間</dt>
+					<dd>${ data.regDate }</dd>
 					<dt>最後登入</dt>
-					<dd>0000-00-00</dd>
+					<dd>${ data.lastDate }</dd>
 				</dl>
 			</div>
 		</div>

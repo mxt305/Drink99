@@ -1,18 +1,16 @@
-<%@ page isErrorPage="true" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"
-     prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"
-     prefix="fmt" %>
+<%@ page isErrorPage="true" language="java"
+	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<title><fmt:message key="ServerError"/></title>
+<title>錯誤頁面</title>
+<%@include file="header.jsp"%>
 </head>
-<body bgcolor="white">
-<h3>
-<fmt:message key="ServerError"/>
-</h3>
-<a href="<c:url value="/" />" target="_blank" title="back">回首頁</a>
-<p>
-: ${msg}
+<body>
+	<div class="container">
+		<h3>錯誤</h3>
+		<p>${msg}</p>
+		<a href="<c:url value="/" />" target="_blank" title="back">回首頁</a>
+	</div>
 </body>
 </html>

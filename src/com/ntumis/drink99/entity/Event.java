@@ -22,7 +22,10 @@ public class Event {
 		return category;
 	}
 	public void setCategory(int category) {
-		this.category = category;
+		if (category >= 0 && category<=5)
+			this.category = category;
+		else
+			this.category = 0;
 	}
 
 	private String place;

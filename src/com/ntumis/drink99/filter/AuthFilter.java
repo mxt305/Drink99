@@ -42,6 +42,7 @@ public class AuthFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
+		request.setCharacterEncoding("UTF-8");
 		HttpSession s = req.getSession();
 		boolean isLogin = false;
 		//String user = "";

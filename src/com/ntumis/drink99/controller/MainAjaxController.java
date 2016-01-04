@@ -31,7 +31,7 @@ public class MainAjaxController extends HttpServlet {
     private long time_from;
     private long time_to;
 	protected Connection conn;
-
+	private String[] event_class = {"event-important", "event-success", "event-warning", "event-info", "event-inverse", "event-special"};
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -69,7 +69,7 @@ public class MainAjaxController extends HttpServlet {
 			cEv.setId(ev.getId());
 			cEv.setTitle(String.format("%s (by %s)", ev.getName(), ev.getEnterpriser().getName()));
 			cEv.setUrl(String.format("/%s/event?id=%d", path_strs[1], ev.getId()));
-			cEv.setClass_name("event-info");
+			cEv.setClass_name(event_class[ev.getCategory()]);
 			cEv.setStart(mergeDate(ev.getDate(),ev.getStartT()).getTimeInMillis());
 			cEv.setEnd(mergeDate(ev.getDate(),ev.getEndT()).getTimeInMillis());
 			alRes.add(cEv);

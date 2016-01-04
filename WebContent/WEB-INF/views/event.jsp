@@ -21,6 +21,9 @@ var evid = ${ data.id };
 		<div class="page-header">
 			<h1>${ data.name }
 				<small><a href="<c:url value="/user?id=" />${ data.enterpriser.id }">By ${ data.enterpriser.name }</a></small>
+				<c:if test="${ data.enterpriser.id == user.id }">
+				<a class="btn btn-default" href="<c:url value="/event/edit?id=" />${ data.id }" role="button">編輯</a>
+				</c:if>
 			</h1>
 		</div>
 		<h2>活動資訊</h2>
@@ -47,7 +50,6 @@ var evid = ${ data.id };
 				<div style="clear: both;"></div>
 			</div>
 		</div>
-
 		<h2>留言</h2>
 		<div id="msg_block">
 		</div>

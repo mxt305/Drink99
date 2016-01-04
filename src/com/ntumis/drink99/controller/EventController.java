@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ntumis.drink99.dao.EventDAO;
 import com.ntumis.drink99.entity.Event;
+import com.ntumis.drink99.util.WebErrorException;
 
 @WebServlet("/event")
 public class EventController extends UserPageController {
@@ -19,16 +20,14 @@ public class EventController extends UserPageController {
 
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {	
+			throws ServletException, IOException, WebErrorException {	
 		getModel(request);
 		if (ev==null){
-			//if the event is not exist
-			//TODO code here
+			throw new WebErrorException("頁面不存在");
 		} else {
 			request.setAttribute("data", ev);
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/event.jsp");
 			rd.forward(request, response);
-			//TODO show event view
 		}
 	}
 	
