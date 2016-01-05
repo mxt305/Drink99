@@ -83,7 +83,10 @@ public class MainAjaxController extends HttpServlet {
 	
 	private Calendar mergeDate(Date d, Time t){
 		  Calendar dCal = Calendar.getInstance();
-		  dCal.setTime(d);
+		  dCal.setTime(d);	  
+		  if (t == null){
+			  return dCal;
+		  }
 		  Calendar tCal = Calendar.getInstance();
 		  tCal.setTime(t);
 
