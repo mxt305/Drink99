@@ -38,18 +38,21 @@ public class MsgController extends UserJsonPageController {
 				em.setTime(new Date());
 				em.setEventID(ev.getId());
 				dMsg.insert(em);
+				success("留言成功", response);
 				break;
 			case 1: // edit
 				Object mId = request.getParameter("id");
 				int id = Integer.parseInt(mId.toString());
 				em = getFormData(request, dMsg.queryById(id));
+				success("編輯留言成功", response);
 				dMsg.update(em);
 				break;
-			case 2: //delete
+			case 2: // delete
 				Object mId1 = request.getParameter("id");
 				int id1 = Integer.parseInt(mId1.toString());
 				em = getFormData(request, dMsg.queryById(id1));
 				dMsg.delete(id1);
+				success("刪除留言成功", response);
 			}
 		} catch (Exception e) {
 			throw new WebErrorException(e.getMessage());
@@ -81,7 +84,7 @@ public class MsgController extends UserJsonPageController {
 			String json_string = gson.toJson(msgs);
 			PrintWriter out = response.getWriter();
 			out.print(json_string);
-		} else{
+		} else {
 		}
 	}
 
@@ -97,8 +100,7 @@ public class MsgController extends UserJsonPageController {
 		response.setCharacterEncoding("UTF-8");
 	}
 
-	private EventMsg getFormData(HttpServletRequest request, EventMsg em) {
-		// boolean valid = true;
+	private EventMsg getFormData(HttpServletRequest request, EventMsg em) throws WebErrorException {
 		try {
 			Object mTitle = request.getParameter("title");
 			Object mContent = request.getParameter("content");
@@ -106,11 +108,16 @@ public class MsgController extends UserJsonPageController {
 				em = new EventMsg();
 			}
 			em.setTitle(mTitle.toString());
+			if (mContent == null || mContent.toString().equals("")) {
+				throw new WebErrorException("內容不能為空");
+			}
 			em.setContent(mContent.toString());
 			return em;
-		} catch (Exception e) {
+		} catch (NullPointerException e1) {
+			throw new WebErrorException("表單內容不正確");
+		} catch (Exception e2) {
+			throw new WebErrorException(e2.getMessage());
 		}
-		return null;
 	}
 
 	private void getModel(HttpServletRequest request) {
@@ -120,8 +127,7 @@ public class MsgController extends UserJsonPageController {
 			EventDAO dEvent = new EventDAO(conn);
 			ev = dEvent.queryById(mId);
 		} catch (Exception e) {
-			
+
 		}
 	}
-
 }

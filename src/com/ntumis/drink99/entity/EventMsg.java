@@ -2,6 +2,8 @@ package com.ntumis.drink99.entity;
 
 import java.util.Date;
 
+import org.jsoup.Jsoup;
+
 public class EventMsg {
 	private int id;
 	private User author;
@@ -27,6 +29,8 @@ public class EventMsg {
 		return content;
 	}
 	public void setContent(String content) {
+		content = content.replaceAll("<", "&lt;");
+		content = content.replaceAll(">", "&gt;");
 		this.content = content;
 	}
 	public int getId() {

@@ -3,6 +3,8 @@ package com.ntumis.drink99.entity;
 import java.sql.Time;
 import java.util.Date;
 
+import org.jsoup.Jsoup;
+
 public class Event {
 	private int id;
 	private String name;
@@ -52,7 +54,7 @@ public class Event {
 		return note;
 	}
 	public void setNote(String note) {
-		this.note = note;
+		this.note = Jsoup.parse(note).text();
 	}
 	public Date getDate() {
 		return date;

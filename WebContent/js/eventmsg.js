@@ -15,19 +15,53 @@ $(function(){
 			title: msg.title,
 			mem: msg.author.name,
 			time: msg.time,
-			content: msg.content
+			content: nl2br(msg.content)
 		}
 		$.tmpl( $("#event_msg_tmpl"), data ).appendTo( "#msg_block" );
 	}
 	
 	function msg_add(){
-		
+		var data = {
+			id: evid,
+			title: $("#f_title").val(),
+			content: $("#f_content").val()
+		}
+		$.ajax({
+			  type: "POST",
+			  url: baseurl + "/event/msg/add",
+			  data: data,
+			  dataType: "json"
+		}).done(function(data){
+			  if(data.success == 1){		  
+				  $.tmpl( $("#alert_tmpl"),{title:"訊息", type:"success", msg:data.msg}).appendTo( "#alert_area" );
+				  reset_form();
+			  } else {
+				  $.tmpl( $("#alert_tmpl"),{title:"錯誤", type:"danger", msg:data.error}).appendTo( "#alert_area" );
+			  }
+			  load_msg()
+		});
+	}
+	
+	function reset_form(){
+		$("#f_title").val("");
+		$("#f_content").val("");
 	}
 	
 	function msg_del(){
 		
 	}
 	
+	$("#btn_submit").click(function(){
+		msg_add();
+	});
+	
+	$("#btn_msgcln").click(function(){
+		reset_form();
+	});
+	
+	function nl2br( str ) {
+		return str.replace(/([^>])\n/g, '$1<br/>\n');
+	} 
 	//test
 //	(function(){
 //		  

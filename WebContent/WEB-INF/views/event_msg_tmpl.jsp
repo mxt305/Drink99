@@ -7,7 +7,7 @@
   </div>
   <div class="panel-body">
   <p>
-  \${ content }
+  {{html content}}
   </p>
   </div>
 </div>

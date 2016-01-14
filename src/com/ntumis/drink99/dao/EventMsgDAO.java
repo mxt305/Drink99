@@ -56,17 +56,18 @@ public class EventMsgDAO {
 	}
 
 	public boolean insert(EventMsg em) {
-		String sql = "INSERT TO event_msg (time, eventID, memberID, title, content) VALUES ( ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO event_msg (id, eventID, memberID, title, content) VALUES ( ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setDate(1, new java.sql.Date(em.getTime().getTime()));
+			ps.setInt(1, getNewId());
+			//ps.setDate(2, new java.sql.Date(em.getTime().getTime()));
 			ps.setInt(2, em.getEventID());
 			ps.setInt(3, em.getAuthor().getId());
 			ps.setString(4, em.getTitle());
 			ps.setString(5, em.getContent());
-			boolean b = ps.execute();
+			ps.execute();
 			ps.close();
-			return b;
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,9 +82,9 @@ public class EventMsgDAO {
 			ps.setString(1, em.getTitle());
 			ps.setString(2, em.getContent());
 			ps.setDate(3, new java.sql.Date(em.getTime().getTime()));
-			boolean b = ps.execute();
+			ps.execute();
 			ps.close();
-			return b;
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,9 +96,9 @@ public class EventMsgDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			boolean b = ps.execute();
+			ps.execute();
 			ps.close();
-			return b;
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -115,5 +116,22 @@ public class EventMsgDAO {
 		em.setTime(res.getDate("time"));
 		return em;
 	}
-
+	
+	private int getNewId(){
+		String sql = "SELECT id FROM event_msg Order BY id DESC LIMIT 1";
+		int i = 1;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet res = ps.executeQuery();
+			if (res.next() && res != null) {
+				int lastId = res.getInt("id");
+				i = lastId+1;
+			}
+			res.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
 }

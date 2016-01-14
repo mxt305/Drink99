@@ -70,7 +70,9 @@ var user_status = ${ status };
 		<div id="msg_block">
 		</div>
 		<div class="panel panel-default">
-			<div class="panel-body">[表單]</div>
+			<div class="panel-body">
+				<%@include file="event_msg_form.jsp"%>
+			</div>
 		</div>
 	</div>
 	<script id="event_msg_tmpl" type="text/x-jquery-tmpl">

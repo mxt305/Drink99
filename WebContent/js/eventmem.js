@@ -22,12 +22,12 @@ $(function(){
 			  data: {ev: evid},
 			  dataType: "json"
 		}).done(function(data){
-			  load_mem();
 			  if(data.success == 1){		  
 				  $.tmpl( $("#alert_tmpl"),{title:"訊息", type:"success", msg:data.msg}).appendTo( "#alert_area" );
 			  } else {
 				  $.tmpl( $("#alert_tmpl"),{title:"錯誤", type:"danger", msg:data.error}).appendTo( "#alert_area" );
 			  }
+			  load_mem();
 			  load_btn(status);
 		});
 	}
