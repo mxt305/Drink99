@@ -30,7 +30,7 @@ public class EventJoinController extends UserJsonPageController {
 
 	@Override
 	protected void doPostProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
 		int s = dEj.getUserJoinStatus(ev, getUser());
 		try {
 			switch (mode) {
@@ -38,16 +38,16 @@ public class EventJoinController extends UserJsonPageController {
 				if(s == -1){
 					boolean b = onInsertData(getUser());
 					if(b){
-						success("join the event successfully", response);
+						success("成功加入活動", response);
 					} else{
-						throw new WebErrorException("fail to join the event");
+						throw new WebErrorException("加入失敗");
 					}
 				} else {
 					boolean b = onUpdateData(1);
 					if(b){
-						success("join event successfully", response);
+						success("成功加入活動", response);
 					} else {
-						throw new WebErrorException("fail to join the event");
+						throw new WebErrorException("加入失敗");
 					}
 				}
 				break;
@@ -58,52 +58,52 @@ public class EventJoinController extends UserJsonPageController {
 					if(s == -1){
 						boolean b = onInsertData(oUser);
 						if(b){
-							success("join event successfully", response);
+							success("邀請成功", response);
 						} else{
-							throw new WebErrorException("fail to join event");
+							throw new WebErrorException("");
 						}
 					} else if(s == 0) {
-						throw new WebErrorException("This user has already to be invited");
+						throw new WebErrorException("該用戶已被邀請");
 					} else if(s == 1) {
-						throw new WebErrorException("This user has already to join the event");
+						throw new WebErrorException("該用戶已參加活動");
 					} else if(s == 2) {
-						throw new WebErrorException("This user has already to opt out the event");
+						throw new WebErrorException("該用戶已退出活動，無法再被邀請");
 					} else {
-						throw new WebErrorException("invaild status value");
+						throw new WebErrorException("參數錯誤");
 					}
 				} else {
-					throw new WebErrorException("you can not invite yourself");
+					throw new WebErrorException("無法邀請自己");
 				}
 				break;
 			case 2: // cancel
 				if(s == -1){
-					throw new WebErrorException("data is not exist");
+					throw new WebErrorException("資料不存在");
 				} else {
 					boolean b = onCancelData();
 					if(b){
-						success("cancel successfully", response);
+						success("取消活動成功", response);
 					} else{
-						throw new WebErrorException("failed to delete data");
+						throw new WebErrorException("取消失敗");
 					}
 				}
 				break;
 			case 3: // opt_out
 				if(s == -1){
-					throw new WebErrorException("data is not exist");
+					throw new WebErrorException("資料不存在");
 				} else if(s == 2) {
-					throw new WebErrorException("You has already to opt out of the event");
+					throw new WebErrorException("你退出活動失敗");
 				} else {
 					boolean b = onUpdateData(2);
 					if(b){
-						success("Opt out of the event successfully", response);
+						success("成功退出活動", response);
 					} else{
-						throw new WebErrorException("failed to Opt out of the event");
+						throw new WebErrorException("退出活動失敗");
 					}
 				}
 				break;
 			}
 		} catch (Exception e) {
-
+			throw new WebErrorException(e.getMessage());
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class EventJoinController extends UserJsonPageController {
 		getMode(request);
 		getModel(request);		
 		if (ev == null) {
-			throw new WebErrorException("the event is not exist");
+			throw new WebErrorException("該活動不存在");
 		}
 
 	}

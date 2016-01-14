@@ -23,7 +23,8 @@ public class EventJoinDAO {
 				ps.setInt(1, ev.getId());
 				ps.setInt(2, u.getId());
 				ps.setInt(3, status);
-				return ps.execute();
+				ps.execute();
+				return true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -39,7 +40,8 @@ public class EventJoinDAO {
 				ps.setInt(1, status);
 				ps.setInt(2, ev.getId());
 				ps.setInt(3, u.getId());
-				return ps.execute();
+				ps.execute();
+				return true;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -53,7 +55,8 @@ public class EventJoinDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());
 			ps.setInt(2, u.getId());
-			return ps.execute();
+			ps.execute();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

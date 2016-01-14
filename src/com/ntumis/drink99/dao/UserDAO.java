@@ -158,7 +158,7 @@ public class UserDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());
 			ResultSet res = ps.executeQuery();
-			if (res.next() && res != null) {
+			while (res.next() && res != null) {
 				User u = resultSetToEntity(res);
 				al.add(u);
 			}
@@ -177,7 +177,7 @@ public class UserDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, ev.getId());
 			ResultSet res = ps.executeQuery();
-			if (res.next() && res != null) {
+			while (res.next() && res != null) {
 				User u = resultSetToEntity(res);
 				al.add(u);
 			}

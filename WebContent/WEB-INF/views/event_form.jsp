@@ -49,33 +49,33 @@
 						<label for="ev_name" class="col-sm-2 control-label">活動名稱</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="ev_name" name="name"
-								placeholder="Drinking happyday..." maxlength="80" value="${ data.name }" />
+								placeholder="Drinking happyday..." maxlength="80" value="${ data.name }" required />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_date" class="col-sm-2 control-label">活動日期</label>
 						<div class="col-sm-10">
-							<input type="date" class="form-control" id="ev_date" name="date" value="${ data.date }" />
+							<input type="date" class="form-control" id="ev_date" name="date" min="${ today }" value="${ data.date }" required />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_startT" class="col-sm-2 control-label">開始時間</label>
 						<div class="col-sm-10">
 							<input type="time" class="form-control" id="ev_startT"
-								name="startT" value="${ data.startT }" />
+								name="startT" value="${ data.startT }" required />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_endT" class="col-sm-2 control-label">結束時間</label>
 						<div class="col-sm-10">
-							<input type="time" class="form-control" id="ev_endT" name="endT" value="${ data.endT }" />
+							<input type="time" class="form-control" id="ev_endT" name="endT" value="${ data.endT }" required />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ev_place" class="col-sm-2 control-label">活動地點</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="ev_place"
-								name="place" maxlength="50" value="${ data.place }" />
+								name="place" maxlength="50" value="${ data.place }" required />
 						</div>
 					</div>
 					<div class="form-group">

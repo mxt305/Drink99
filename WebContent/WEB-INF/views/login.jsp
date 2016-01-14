@@ -20,9 +20,10 @@
 <div class="jumbotron">
 
 <h1>常嚐酒久 - 登入</h1>
+<table>
 	<tr><td align="center" valign="center">
 	<img id="FBLogin" alt="" src="<c:url value="/img/fb-login.png" />" />
-	</td></tr>
+	</td></tr></table>
 </div>
 </div>
 </body>

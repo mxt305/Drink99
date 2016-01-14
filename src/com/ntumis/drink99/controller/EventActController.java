@@ -3,6 +3,7 @@ package com.ntumis.drink99.controller;
 import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,6 +33,7 @@ public class EventActController extends UserPageController {
 			throws ServletException, IOException, WebErrorException {
 		getMode(request);
 		request.setAttribute("mode", mode);
+		request.setAttribute("today", sdf.format(new Date()));
 		switch (mode) {
 		case 0: // add
 			showView(request, response);
