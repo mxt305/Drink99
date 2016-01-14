@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="<c:url value="/css/calendar.min.css" />">
 <script src="http://connect.facebook.net/zh_TW/all.js"></script>
 <script type="text/javascript">
-	var baseUrl = "<c:url value="/" />";
+	var BASE_URL = "<c:url value="/" />";
 </script>
 <script type="text/javascript" src="<c:url value="/js/fblogin.js" />"></script>
 </head>

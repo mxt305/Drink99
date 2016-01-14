@@ -2,8 +2,6 @@ package com.ntumis.drink99.entity;
 
 import java.util.Date;
 
-import org.jsoup.Jsoup;
-
 public class EventMsg {
 	private int id;
 	private User author;

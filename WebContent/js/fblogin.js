@@ -10,7 +10,7 @@ $(function() {
 		fb_login();
 	});
 	function app_login(id, name, token) {
-		$.post(baseUrl + "login/fb", {
+		$.post(BASE_URL + "login/fb", {
 			fb_id : id,
 			fb_name : name,
 			token : token
@@ -20,7 +20,7 @@ $(function() {
 			} else {
 				// 登入失敗
 			}*/
-			window.location.href = baseUrl;
+			window.location.href = BASE_URL;
 		});
 	}
 	function fb_login() {

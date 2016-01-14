@@ -1,10 +1,13 @@
 $(function(){
+	var ev_id = EV_ID;
+	var base_url = BASE_URL;
+	
 	load_mem();
 	load_btn(user_status);
 	function load_mem(){
 		$("#b_mem0").text("");
 		$("#b_mem1").text("");
-		$.getJSON(baseurl + "/event/join/data?ev=" + evid, function(data){
+		$.getJSON(base_url + "/event/join/data?ev=" + ev_id, function(data){
 			var inv = data.invitees;
 			$.each(inv,function(i, v){
 				$.tmpl( $("#event_join_tmpl"), v ).appendTo( "#b_mem0" );
@@ -18,8 +21,8 @@ $(function(){
 	function join_event(act, status){
 		$.ajax({
 			  type: "POST",
-			  url: baseurl + "/event/join/" + act,
-			  data: {ev: evid},
+			  url: base_url + "/event/join/" + act,
+			  data: {ev: ev_id},
 			  dataType: "json"
 		}).done(function(data){
 			  if(data.success == 1){		  

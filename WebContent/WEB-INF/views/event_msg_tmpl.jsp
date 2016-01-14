@@ -9,5 +9,10 @@
   <p>
   {{html content}}
   </p>
+  {{if isAuth}}
+  <div class="text-right">
+ 	 <button class="btn btn-default" type="button" id="btn_del\${ msgID }">刪除</button>
+  </div>
+  {{/if}}
   </div>
 </div>

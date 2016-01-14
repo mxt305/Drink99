@@ -9,8 +9,9 @@
 <%@include file="header.jsp"%>
 <link rel="stylesheet" href="<c:url value="/css/calendar.min.css" />">
 <script type="text/javascript">
-var baseurl = "<c:url value="/" />";
-var evid = ${ data.id };
+var BASE_URL = "<c:url value="/" />";
+var EV_ID = ${ data.id };
+var USER_ID = ${ user.id };
 var user_status = ${ status };
 </script>
 <script src="<c:url value="/js/eventmsg.js" />"></script>

@@ -21,13 +21,13 @@ public class EventActController extends UserPageController {
 	SimpleDateFormat sdf_time;
 	private int mode;
 	private static final long serialVersionUID = -312343616281541301L;
-	
-	public EventActController(){	
-		
+
+	public EventActController() {
+
 		sdf = new SimpleDateFormat("y-M-d");
 		sdf_time = new SimpleDateFormat("H:m");
 	}
-	
+
 	@Override
 	protected void doGetProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, WebErrorException {
@@ -39,12 +39,12 @@ public class EventActController extends UserPageController {
 			showView(request, response);
 			break;
 		case 1: // edit
-			try {				
+			try {
 				EventDAO dEvent = new EventDAO(conn);
 				Object mId = request.getParameter("id");
 				int id = Integer.parseInt(mId.toString());
 				Event ev = dEvent.queryById(id);
-				if(ev.getEnterpriser().equals(getUser())){
+				if (ev.getEnterpriser().equals(getUser())) {
 					request.setAttribute("data", ev);
 					showView(request, response);
 				} else {
@@ -57,43 +57,39 @@ public class EventActController extends UserPageController {
 		}
 
 	}
-	
-	private void showView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+	private void showView(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/event_form.jsp");
 		rd.forward(request, response);
 	}
-	
+
 	@Override
 	protected void doPostProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, WebErrorException {
 		getMode(request);
 		Event ev = null;
-		try {
-			EventDAO dEvent = new EventDAO(conn);
-			switch (mode) {
-			case 0: // add
+		EventDAO dEvent = new EventDAO(conn);
+		switch (mode) {
+		case 0: // add
+			ev = getFormData(request, ev);
+			ev.setEnterpriser(getUser());
+			ev.setId(dEvent.getNewId());
+			dEvent.insert(ev);
+			break;
+		case 1: // edit
+			Object mId = request.getParameter("id");
+			int id = Integer.parseInt(mId.toString());
+			ev = dEvent.queryById(id);
+			if (getUser().equals(ev.getEnterpriser())) {
 				ev = getFormData(request, ev);
-				ev.setEnterpriser(getUser());
-				ev.setId(dEvent.getNewId());
-				dEvent.insert(ev);
-				redirct(request, response, "/event?id=" + ev.getId());
-				break;
-			case 1: // edit
-					Object mId = request.getParameter("id");
-					int id = Integer.parseInt(mId.toString());
-					ev = dEvent.queryById(id);
-					if(getUser().equals(ev.getEnterpriser())){
-					ev = getFormData(request, ev);
-					dEvent.update(ev);
-				} else {
-					throw new WebErrorException("權限不足");
-				}
-				break;
+				dEvent.update(ev);
+			} else {
+				throw new WebErrorException("權限不足");
 			}
-		} catch (Exception e) {
-
+			break;
 		}
-
+		redirct(request, response, "/event?id=" + ev.getId());
 	}
 
 	private void getMode(HttpServletRequest request) {
@@ -105,7 +101,8 @@ public class EventActController extends UserPageController {
 			mode = 1;
 		} else if (sMode.equals("delete")) {
 			mode = 2;
-		};
+		}
+		;
 	}
 
 	private Event getFormData(HttpServletRequest request, Event ev) {
@@ -141,7 +138,8 @@ public class EventActController extends UserPageController {
 
 	}
 
-	private void redirct(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException{
+	private void redirct(HttpServletRequest request, HttpServletResponse response, String url)
+			throws ServletException, IOException {
 		response.sendRedirect(request.getContextPath() + url);
 	}
 }

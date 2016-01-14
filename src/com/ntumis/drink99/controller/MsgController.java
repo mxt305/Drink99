@@ -18,7 +18,7 @@ import com.ntumis.drink99.entity.Event;
 import com.ntumis.drink99.entity.EventMsg;
 import com.ntumis.drink99.util.WebErrorException;
 
-@WebServlet({ "/event/msg/data", "/event/msg/edit", "/event/msg/add" })
+@WebServlet({ "/event/msg/data", "/event/msg/edit", "/event/msg/add", "/event/msg/delete" })
 public class MsgController extends UserJsonPageController {
 
 	private int mode;
@@ -41,16 +41,19 @@ public class MsgController extends UserJsonPageController {
 				success("留言成功", response);
 				break;
 			case 1: // edit
-				Object mId = request.getParameter("id");
+				Object mId = request.getParameter("msgid");
 				int id = Integer.parseInt(mId.toString());
 				em = getFormData(request, dMsg.queryById(id));
 				success("編輯留言成功", response);
 				dMsg.update(em);
 				break;
 			case 2: // delete
-				Object mId1 = request.getParameter("id");
+				Object mId1 = request.getParameter("msgid");
 				int id1 = Integer.parseInt(mId1.toString());
-				em = getFormData(request, dMsg.queryById(id1));
+				em = dMsg.queryById(id1);
+				if(!em.getAuthor().equals(getUser()) || em.getEventID() != ev.getId()){
+					throw new WebErrorException("無權刪除該留言");
+				}
 				dMsg.delete(id1);
 				success("刪除留言成功", response);
 			}

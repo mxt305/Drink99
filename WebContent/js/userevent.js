@@ -1,14 +1,16 @@
 $(function(){
+	var base_url = BASE_URL;
+	var user_id = USER_ID;
 	load_list();
 	function load_list(){
 		$("#cur_ev").text("");
 		$("#his_ev").text("");
-		$.getJSON(baseurl + "/user/event?id=" + userid + "&s=1", function(data){
+		$.getJSON(base_url + "/user/event?id=" + user_id + "&s=1", function(data){
 			$.each(data,function(i, v){
 				push_ev(i, v, "#cur_ev");
 			});
 		});
-		$.getJSON(baseurl + "/user/event?id=" + userid + "&s=2", function(data){
+		$.getJSON(base_url + "/user/event?id=" + user_id + "&s=2", function(data){
 			$.each(data,function(i, v){
 				push_ev(i, v, "#his_ev");
 			});
